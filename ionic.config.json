@@ -1,0 +1,7 @@
+{
+  "name": "art-and-roll",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
