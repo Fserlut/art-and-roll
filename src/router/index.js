@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from '@ionic/vue-router';
 // eslint-disable-next-line no-unused-vars
 import {RouteRecordRaw} from 'vue-router';
 import Home from '../views/Home.vue'
+import Register from "@/views/Register";
 
 const routes = [
 	{
@@ -12,6 +13,11 @@ const routes = [
 		path: '/home',
 		name: 'Home',
 		component: Home
+	},
+	{
+		path: '/register',
+		name: 'Register',
+		component: Register
 	}
 ]
 
