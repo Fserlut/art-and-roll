@@ -1,5 +1,5 @@
 <template>
-	<ion-app>
+	<ion-page>
 		<ion-card>
 			<ion-avatar>
 				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -24,17 +24,16 @@
 				<h4 @click="goLogin">Уже с нами? Войдите.</h4>
 			</div>
 		</ion-card>
-	</ion-app>
+	</ion-page>
 </template>
 
 <script>
-import {defineComponent} from 'vue';
 import store from "@/store";
 import toast from "@/utils/toast";
-// import {loadingController} from '@ionic/vue';
-// import toast from "@/utils/toast";
-// import store from "@/store";
-export default defineComponent({
+import { IonPage } from '@ionic/vue';
+
+export default {
+	components: {IonPage},
 	name: 'Home',
 	computed: {
 		getLogin() {
@@ -67,11 +66,11 @@ export default defineComponent({
 			this.$router.push('/login');
 		}
 	}
-});
+};
 </script>
 
 <style scoped>
-ion-app {
+.ion-page {
 	display: flex;
 	align-items: center;
 	justify-content: center;

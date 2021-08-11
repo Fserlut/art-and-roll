@@ -1,5 +1,5 @@
 <template>
-	<ion-app>
+	<ion-page>
 		<ion-card>
 			<ion-avatar>
 				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
@@ -20,16 +20,17 @@
 				<h4 @click="goRegister">Нет аккаунта? Загеристрируйся.</h4>
 			</div>
 		</ion-card>
-	</ion-app>
+	</ion-page>
 </template>
 
 <script>
-import {defineComponent} from 'vue';
 import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
+import { IonPage } from '@ionic/vue';
 
-export default defineComponent({
+export default {
+	components: {IonPage},
 	name: 'Home',
 	computed: {
 		getLogin() {
@@ -57,7 +58,11 @@ export default defineComponent({
 			if (this.checkLoginData) {
 				try {
 					await store.dispatch('login', {email: this.getLogin, password: this.getPassword});
-					await toast({message: 'Успешно! Через 1,5 секунды мы вам что-то покажем', duration: 1500, color: 'success'});
+					await toast({
+						message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
+						duration: 1500,
+						color: 'success'
+					});
 					setTimeout(() => {
 						this.$router.push('/main');
 					}, 1500)
@@ -71,12 +76,12 @@ export default defineComponent({
 		goRegister() {
 			this.$router.push('/register');
 		}
-	}
-});
+	},
+};
 </script>
 
 <style scoped>
-ion-app {
+.ion-page {
 	display: flex;
 	align-items: center;
 	justify-content: center;
