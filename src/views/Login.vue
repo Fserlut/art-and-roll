@@ -26,8 +26,8 @@
 <script>
 import {defineComponent} from 'vue';
 import {loadingController} from '@ionic/vue';
-import toast from "@/utils/toast";
 import store from "@/store";
+import toast from "@/utils/toast";
 
 export default defineComponent({
 	name: 'Home',
@@ -57,14 +57,15 @@ export default defineComponent({
 			if (this.checkLoginData) {
 				try {
 					await store.dispatch('login', {email: this.getLogin, password: this.getPassword});
+					await toast({message: 'Успешно! Через 1,5 секунды мы вам что-то покажем', duration: 1500, color: 'success'});
+					setTimeout(() => {
+						this.$router.push('/main');
+					}, 1500)
 				} catch (e) {
 					console.log(e);
-					throw e
+					throw e;
 				}
-			} else {
-				await toast({message: 'Ошибка... Попробуйте еще раз', duration: 2000, color: 'danger'});
 			}
-
 			await loading.dismiss();
 		},
 		goRegister() {

@@ -21,7 +21,7 @@
 				<ion-button size="large" @click="register" color="tertiary">Зарегистрироваться</ion-button>
 			</div>
 			<div class="text-center">
-				<h4 @click="goRegister">Уже с нами? Войдите.</h4>
+				<h4 @click="goLogin">Уже с нами? Войдите.</h4>
 			</div>
 		</ion-card>
 	</ion-app>
@@ -55,13 +55,16 @@ export default defineComponent({
 			try {
 				await store.dispatch('register', {email: this.getLogin, password: this.getPassword, name: this.getName});
 				await toast({message: 'Успешно! Через 1,5 секунды мы вам что-то покажем', duration: 2000, color: 'success'});
+				setTimeout(() => {
+					this.$router.push('/main');
+				}, 1500)
 			} catch (e) {
-				await toast({message: 'Что-то пошло не так', duration: 1500, color: 'error'});
 				console.log(e);
+				throw e;
 			}
 		},
-		goRegister() {
-			this.$router.push('/home');
+		goLogin() {
+			this.$router.push('/login');
 		}
 	}
 });
