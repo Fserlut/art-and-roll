@@ -6,6 +6,9 @@ import Register from "@/views/Register";
 import Main from "@/views/Main";
 import firebase from 'firebase/app';
 import store from "@/store";
+import Profile from "@/views/Profile";
+import Messenger from "@/views/Messenger";
+import Search from "@/views/Search";
 
 const routes = [
 	{
@@ -51,7 +54,40 @@ const routes = [
 			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
 			next();
 		}
-	}
+	},
+	{
+		path: '/profile',
+		name: 'Profile',
+		component: Profile,
+		beforeEnter(to, from, next) {
+			if (!firebase.auth().currentUser){
+				next('/login')
+			}
+			next();
+		}
+	},
+	{
+		path: '/messenger',
+		name: 'Messenger',
+		component: Messenger,
+		beforeEnter(to, from, next) {
+			if (!firebase.auth().currentUser){
+				next('/login')
+			}
+			next();
+		}
+	},
+	{
+		path: '/search',
+		name: 'Search',
+		component: Search,
+		beforeEnter(to, from, next) {
+			if (!firebase.auth().currentUser){
+				next('/login')
+			}
+			next();
+		}
+	},
 ]
 
 const router = createRouter({
