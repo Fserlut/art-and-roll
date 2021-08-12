@@ -1,6 +1,6 @@
 <template>
 	<ion-page>
-		Main Page
+		Messenger Page
 		<Navigations />
 	</ion-page>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<ion-page>
-		Main Page
+		Search Page
 		<Navigations />
 	</ion-page>
 </template>
