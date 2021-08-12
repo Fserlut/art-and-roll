@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from '@ionic/vue-router';
 // eslint-disable-next-line no-unused-vars
 import {RouteRecordRaw} from 'vue-router';
 import Login from '../views/Login.vue'
-import Register from "@/views/Register";
+import Register from "@/views/Register/index";
 import Main from "@/views/Main";
 
 const routes = [
