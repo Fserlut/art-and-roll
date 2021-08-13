@@ -6,7 +6,7 @@
 			</ion-avatar>
 			<h1 class="text-center">Чтобы продолжить нужно войти в свой профиль</h1>
 			<ion-item>
-				<ion-label position="floating">Логин</ion-label>
+				<ion-label position="floating">Почта</ion-label>
 				<ion-input ref="login"></ion-input>
 			</ion-item>
 			<ion-item>
