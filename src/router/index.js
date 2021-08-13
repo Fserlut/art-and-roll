@@ -29,6 +29,7 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next()
 			}
+			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
 			next('/main');
 		}
 	},
@@ -40,6 +41,7 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next()
 			}
+			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
 			next('/main');
 		}
 	},
@@ -63,6 +65,7 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next('/login')
 			}
+			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
 			next();
 		}
 	},

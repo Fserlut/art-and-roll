@@ -1,11 +1,15 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
-.w-100{
+.relative {
+	position: relative;
+}
+
+.w-100 {
 	width: 100%;
 }
 
-.d-flex{
+.d-flex {
 	display: flex;
 }
 
@@ -13,16 +17,20 @@ http://ionicframework.com/docs/theming/ */
 	text-align: center;
 }
 
-.mb-1{
+.mb-1 {
 	margin-bottom: 1rem;
 }
 
-.mt-2{
+.mt-2 {
 	margin-top: 2rem;
 }
 
-.mb-2{
+.mb-2 {
 	margin-bottom: 2rem;
+}
+
+.pt-ios {
+	padding-top: 30px !important;
 }
 
 /** Ionic CSS Variables **/
