@@ -15,6 +15,9 @@ export default {
 			state.user.uid = payload.uid;
 			state.user.name = payload.name;
 			state.user.email = payload.email;
+		},
+		clearUser(state) {
+			state.user = {}
 		}
 	},
 }

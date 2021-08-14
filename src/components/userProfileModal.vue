@@ -4,25 +4,88 @@
 			<ion-header>
 				<ion-toolbar class="pt-ios ion-padding-top ion-padding-bottom">
 					<ion-card-title class="text-center" size="large">Настройки</ion-card-title>
-					<ion-icon class="close-modal-icon" @click="closeModal" size="large" :icon="chevronBackSharp"></ion-icon>
+					<ion-icon
+						class="close-modal-icon"
+						@click="closeModal"
+						size="large"
+						:icon="chevronBackSharp"
+					>
+					</ion-icon>
 				</ion-toolbar>
 			</ion-header>
 			<ion-content class="ion-padding">
-				Настройки профиля...
+				<ion-list>
+					<ion-item
+						v-for="(item, idx) in menuItems"
+						:key="item.name + idx"
+						@click="item.action"
+					>
+						{{ item.title }}
+					</ion-item>
+				</ion-list>
 			</ion-content>
 		</div>
 	</ion-page>
 </template>
 
 <script>
-import {IonPage, IonContent, IonHeader, IonCardTitle, IonToolbar, modalController, IonIcon} from '@ionic/vue';
+import {
+	IonPage,
+	IonContent,
+	IonHeader,
+	IonCardTitle,
+	IonToolbar,
+	modalController,
+	IonIcon,
+	loadingController,
+	IonList,
+	IonItem,
+} from '@ionic/vue';
 import {chevronBackSharp} from 'ionicons/icons';
+import store from "@/store";
 
 export default {
 	data() {
 		return {
-			menu: [
-				{}
+			menuItems: [
+				{
+					name: 'edit-profile',
+					title: 'Редактировать профиль',
+					action: 'edit-profile',
+				},
+				{
+					name: 'user-agreements',
+					title: 'Пользовательское соглашение',
+					action: 'get-user-agreements',
+				},
+				{
+					name: 'about-app',
+					title: 'О приложении',
+					action: 'get-about-app',
+				},
+				{
+					name: 'logout',
+					title: 'Выйти',
+					action: async () => {
+						const loading = await loadingController
+							.create({
+								spinner: null,
+								message: 'Выходим...',
+								translucent: true,
+								cssClass: 'custom-class custom-loading',
+								backdropDismiss: true
+							});
+
+						await loading.present();
+
+						await store.dispatch('logout');
+						this.closeModal();
+						setTimeout(async () => {
+							this.$router.push('/login');
+							await loading.dismiss();
+						}, 200);
+					},
+				}
 			],
 		}
 	},
@@ -31,7 +94,7 @@ export default {
 			modalController.dismiss();
 		}
 	},
-	components: {IonContent, IonHeader, IonCardTitle, IonToolbar, IonIcon, IonPage},
+	components: { IonList, IonItem, IonContent, IonHeader, IonCardTitle, IonToolbar, IonIcon, IonPage },
 	setup() {
 		return {
 			chevronBackSharp
@@ -44,7 +107,8 @@ export default {
 .user-profile-modal {
 	height: 100vh;
 }
-.close-modal-icon{
+
+.close-modal-icon {
 	position: absolute;
 	left: 5px;
 	top: 50%;

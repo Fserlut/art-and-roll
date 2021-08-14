@@ -30,9 +30,6 @@ export default {
 					},
 				})
 			return modal.present();
-		},
-		closerModal() {
-
 		}
 	},
 	computed: {

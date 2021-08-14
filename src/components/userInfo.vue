@@ -3,7 +3,7 @@
 		<div class="avatar text-center">
 			<div class="relative">
 				<div class="avatar-img" :style="'background: url(' + getAvatar + ')'">
-					<ion-icon size="large" :icon="pencilSharp"></ion-icon>
+					<ion-icon @click="presentActionSheet" size="medium" :icon="addSharp"></ion-icon>
 				</div>
 			</div>
 			<ion-card-title>{{ user.name }}</ion-card-title>
@@ -17,7 +17,9 @@
 
 <script>
 import store from "@/store";
-import { pencilSharp } from 'ionicons/icons';
+import { addSharp } from 'ionicons/icons';
+import { actionSheetController } from '@ionic/vue';
+import {usePhotoGallery} from "@/utils/takePhoto";
 
 export default {
 	computed: {
@@ -31,9 +33,46 @@ export default {
 			return store.getters.user;
 		}
 	},
+	methods: {
+		async presentActionSheet() {
+			const actionSheet = await actionSheetController
+				.create({
+					header: 'Изменить аватар',
+					cssClass: 'my-custom-class',
+					buttons: [
+						{
+							text: 'Сделать фотографию',
+							handler: () => {
+								console.log('Take photo');
+								this.takePhoto();
+							},
+						},
+						{
+							text: 'Загрузить фотографию',
+							handler: () => {
+								console.log('Upload img');
+							},
+						},
+						{
+							text: 'Отменить',
+							role: 'cancel',
+							handler: () => {
+								console.log('Cancel clicked')
+							},
+						},
+					]
+				})
+			await actionSheet.present();
+
+			const { role } = await actionSheet.onDidDismiss();
+			console.log('onDidDismiss resolved with role', role);
+		}
+	},
 	setup() {
+		const {takePhoto} = usePhotoGallery();
+
 		return {
-			pencilSharp
+			takePhoto, addSharp
 		}
 	}
 }
@@ -53,9 +92,9 @@ export default {
 .relative ion-icon {
 	z-index: 112;
 	position: absolute;
-	right: -5px;
-	bottom: -5px;
-	background: rgba(255, 255, 255, .8);
+	right: 5px;
+	bottom: 5px;
+	background: rgba(255, 255, 255, 1);
 	border-radius: 50%;
 	padding: 5px;
 }
