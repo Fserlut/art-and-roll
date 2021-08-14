@@ -23,10 +23,14 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
 import firebase from 'firebase/app';
 
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
+
 
 firebase.initializeApp({
 	apiKey: "AIzaSyBH-1U9dpsYyf57_izL7sVnysCgTbh4V2o",
@@ -40,6 +44,8 @@ firebase.initializeApp({
 });
 
 let app;
+
+defineCustomElements(window);
 
 firebase.auth().onAuthStateChanged(() => {
 	if (!app) {

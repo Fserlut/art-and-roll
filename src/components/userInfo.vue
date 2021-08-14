@@ -8,7 +8,6 @@
 			</div>
 			<ion-card-title>{{ user.name }}</ion-card-title>
 		</div>
-
 		<ion-card-content>
 			<ion-button expand="block">Редактировать профиль</ion-button>
 		</ion-card-content>
@@ -18,16 +17,14 @@
 <script>
 import store from "@/store";
 import { addSharp } from 'ionicons/icons';
-import { actionSheetController } from '@ionic/vue';
-import {usePhotoGallery} from "@/utils/takePhoto";
+import { actionSheetController, IonModal } from '@ionic/vue';
+import { usePhotoGallery } from "@/utils/takePhoto";
 
 export default {
+	components: { IonModal },
 	computed: {
 		getAvatar() {
-			if (this.user.avatar) {
-				return this.user.avatar
-			}
-			return 'https://ionicframework.com/docs/demos/api/avatar/avatar.svg'
+			return this.user.avatar;
 		},
 		user() {
 			return store.getters.user;
@@ -42,9 +39,8 @@ export default {
 					buttons: [
 						{
 							text: 'Сделать фотографию',
-							handler: () => {
-								console.log('Take photo');
-								this.takePhoto();
+							handler: async () => {
+								await this.takePhoto();
 							},
 						},
 						{
@@ -70,7 +66,6 @@ export default {
 	},
 	setup() {
 		const {takePhoto} = usePhotoGallery();
-
 		return {
 			takePhoto, addSharp
 		}
