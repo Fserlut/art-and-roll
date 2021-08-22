@@ -47,6 +47,8 @@ let app;
 
 defineCustomElements(window);
 
+// firebase.auth().settings.appVerificationDisabledForTesting = true;
+
 firebase.auth().onAuthStateChanged(() => {
 	if (!app) {
 		app = createApp(App)

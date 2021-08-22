@@ -20,17 +20,21 @@ export default defineComponent({
 		Error
 	},
 	async mounted() {
-		let userDataFromDB = {};
-		await firebase.database().ref(`/users/${store.getters.user.uid}/info`).get().then((snapshot) => {
-			if (snapshot.exists()) {
-				userDataFromDB = snapshot.val();
-			} else {
-				console.log("No data available");
-			}
-		}).catch((error) => {
-			console.error(error);
-		});
-		store.commit('setAvatar', {avatar: userDataFromDB.avatar});
+		if (!firebase.auth().currentUser) {
+
+		} else {
+			let userDataFromDB = {};
+			await firebase.database().ref(`/users/${store.getters.user.uid}/info`).get().then((snapshot) => {
+				if (snapshot.exists()) {
+					userDataFromDB = snapshot.val();
+				} else {
+					console.log("No data available");
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+			store.commit('setAvatar', {avatar: userDataFromDB.avatar});
+		}
 	}
 });
 </script>

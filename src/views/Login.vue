@@ -4,21 +4,16 @@
 			<ion-avatar>
 				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
 			</ion-avatar>
-			<h1 class="text-center">Чтобы продолжить нужно войти в свой профиль</h1>
+			<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
 			<ion-item>
-				<ion-label position="floating">Почта</ion-label>
-				<ion-input ref="login"></ion-input>
-			</ion-item>
-			<ion-item>
-				<ion-label position="floating">Пароль</ion-label>
-				<ion-input ref="password" type="password"></ion-input>
+				<ion-label position="floating">Телефон</ion-label>
+				<ion-input inputmode="tel" type="tel" ref="phone"></ion-input>
 			</ion-item>
 			<div class="text-center mt-2 mb-1">
-				<ion-button size="large" @click="login" color="tertiary">Войти</ion-button>
+				<ion-button id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">Войти
+				</ion-button>
 			</div>
-			<div class="text-center">
-				<h4 @click="goRegister">Нет аккаунта? Загеристрируйся.</h4>
-			</div>
+			<div id="phone-sign-in-recaptcha"></div>
 		</ion-card>
 	</ion-page>
 </template>
@@ -27,20 +22,20 @@
 import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
-import { IonPage } from '@ionic/vue';
+import {IonPage} from '@ionic/vue';
+import firebase from 'firebase/app';
 
 export default {
 	components: {IonPage},
 	name: 'Home',
 	computed: {
-		getLogin() {
-			return this.$refs.login.querySelector('input').value;
+		getPhone() {
+			return this.$refs.phone.querySelector('input').value;
 		},
-		getPassword() {
-			return this.$refs.password.querySelector('input').value;
-		},
+
 		checkLoginData() {
-			return (this.getLogin.length > 4 && this.getPassword.length > 4);
+			// Check phone
+			return (true);
 		}
 	},
 	methods: {
@@ -57,26 +52,27 @@ export default {
 			await loading.present();
 			if (this.checkLoginData) {
 				try {
-					await store.dispatch('login', {email: this.getLogin, password: this.getPassword});
-					await toast({
-						message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
-						duration: 1500,
-						color: 'success'
-					});
-					setTimeout(() => {
-						this.$router.push('/main');
-					}, 1500)
+					console.log('here from /login');
+					// await toast({
+					store.commit('setPhone', {phone: this.getPhone});
+					await store.dispatch('login', {phone: this.getPhone});
+					this.$router.push('/smscode');
+					// 	message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
+					// 	duration: 1500,
+					// 	color: 'success'
+					// });
+					// setTimeout(() => {
+					// }, 1500)
 				} catch (e) {
 					console.log(e);
 					throw e;
 				}
 			}
 			await loading.dismiss();
-		},
-		goRegister() {
-			this.$router.push('/register');
 		}
 	},
+	mounted() {
+	}
 };
 </script>
 

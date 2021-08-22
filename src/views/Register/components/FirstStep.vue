@@ -9,18 +9,11 @@
 			<ion-input ref="name"></ion-input>
 		</ion-item>
 		<ion-item>
-			<ion-label position="floating">Эл. Почта</ion-label>
-			<ion-input inputmode="email" type="email" ref="login"></ion-input>
-		</ion-item>
-		<ion-item>
-			<ion-label position="floating">Пароль</ion-label>
-			<ion-input ref="password" type="password"></ion-input>
+			<ion-label position="floating">Логин</ion-label>
+			<ion-input inputmode="email" type="text" ref="login"></ion-input>
 		</ion-item>
 		<div class="text-center mt-2 mb-1">
-			<ion-button size="large" @click="nextStep" color="tertiary">Зарегистрироваться</ion-button>
-		</div>
-		<div class="text-center">
-			<h4 @click="goLogin">Уже с нами? Войдите.</h4>
+			<ion-button size="large" @click="nextStep" color="tertiary">Продолжить</ion-button>
 		</div>
 	</ion-card>
 </template>
@@ -32,19 +25,13 @@ export default {
 		getLogin() {
 			return this.$refs.login.querySelector('input').value;
 		},
-		getPassword() {
-			return this.$refs.password.querySelector('input').value;
-		},
 		getName() {
 			return this.$refs.name.querySelector('input').value;
 		}
 	},
 	methods: {
 		nextStep() {
-			this.$emit('nextStep', {email: this.getLogin, password: this.getPassword, name: this.getName});
-		},
-		goLogin() {
-			this.$router.push('/login');
+			this.$emit('nextStep', {login: this.getLogin, name: this.getName});
 		}
 	}
 };

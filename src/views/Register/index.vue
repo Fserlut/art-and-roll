@@ -34,6 +34,7 @@ export default {
 			this.step++;
 		},
 		async register(userData) {
+			console.log(userData);
 			const loading = await loadingController
 				.create({
 					spinner: null,
@@ -48,14 +49,14 @@ export default {
 				await store.dispatch('register', {
 					...this.user
 				});
-				await toast({
-					message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
-					duration: 2000,
-					color: 'success'
-				});
-				setTimeout(() => {
-					this.$router.push('/main');
-				}, 1500)
+				// await toast({
+				// 	message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
+				// 	duration: 2000,
+				// 	color: 'success'
+				// });
+				// setTimeout(() => {
+				// 	this.$router.push('/main');
+				// }, 1500)
 			} catch (e) {
 				console.log(e);
 				throw e;

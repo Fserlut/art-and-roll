@@ -9,6 +9,7 @@ import store from "@/store";
 import Profile from "@/views/Profile";
 import Messenger from "@/views/Messenger";
 import Search from "@/views/Search";
+import SmsCode from "@/views/SmsCode";
 
 const routes = [
 	{
@@ -17,7 +18,7 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next('/login')
 			}
-			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
+			// store.dispatch('fetchUserData');
 			next('/main');
 		}
 	},
@@ -29,7 +30,18 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next()
 			}
-			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
+			// store.dispatch('fetchUserData');
+			next('/main');
+		}
+	},
+	{
+		path: '/smscode',
+		name: 'SmsCode',
+		component: SmsCode,
+		beforeEnter(to, from, next) {
+			if (!firebase.auth().currentUser){
+				next()
+			}
 			next('/main');
 		}
 	},
@@ -41,7 +53,7 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next()
 			}
-			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
+			// store.dispatch('fetchUserData');
 			next('/main');
 		}
 	},
@@ -53,7 +65,6 @@ const routes = [
 			if (!firebase.auth().currentUser){
 				next('/login')
 			}
-			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
 			next();
 		}
 	},
@@ -61,11 +72,11 @@ const routes = [
 		path: '/profile',
 		name: 'Profile',
 		component: Profile,
-		beforeEnter(to, from, next) {
+		async beforeEnter(to, from, next) {
 			if (!firebase.auth().currentUser){
 				next('/login')
 			}
-			store.commit('setUser', {name: firebase.auth().currentUser.displayName, email: firebase.auth().currentUser.email, uid: firebase.auth().currentUser.uid});
+			// await store.dispatch('fetchUserData');
 			next();
 		}
 	},
