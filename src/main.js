@@ -2,6 +2,8 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router';
 
+import VueTheMask from "vue-the-mask";
+
 import {IonicVue} from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -29,6 +31,7 @@ defineCustomElements(window);
 
 let app = createApp(App)
 	.use(IonicVue)
+	.use(VueTheMask)
 	.use(router);
 
 router.isReady().then(() => {

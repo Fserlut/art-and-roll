@@ -6,14 +6,13 @@
 			</ion-avatar>
 			<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
 			<ion-item>
-				<ion-label position="floating">Телефон</ion-label>
-				<ion-input inputmode="tel" type="tel" ref="phone"></ion-input>
+				<input class="native-input" v-model="phone" type="tel" inputmode="tel" placeholder="+7 (9__) ___-__-__" v-mask="'+7 (9##) ###-##-##'">
 			</ion-item>
 			<div class="text-center mt-2 mb-1">
-				<ion-button id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">Войти
+				<ion-button id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
+					Войти
 				</ion-button>
 			</div>
-			<div id="phone-sign-in-recaptcha"></div>
 		</ion-card>
 	</ion-page>
 </template>
@@ -26,6 +25,11 @@ import {IonPage} from '@ionic/vue';
 
 export default {
 	components: {IonPage},
+	data() {
+		return {
+			phone: '',
+		}
+	},
 	name: 'Home',
 	computed: {
 		getPhone() {
@@ -53,8 +57,6 @@ export default {
 			await loading.dismiss();
 		}
 	},
-	mounted() {
-	}
 };
 </script>
 
@@ -96,5 +98,15 @@ ion-avatar {
 
 ion-item {
 	padding-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+input{
+	background: transparent!important;
+	border: none!important;
+	outline: none!important;
+	font-size: 22px;
+	width: 100%;
+	text-align: center;
 }
 </style>
