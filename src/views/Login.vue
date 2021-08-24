@@ -23,7 +23,6 @@ import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
 import {IonPage} from '@ionic/vue';
-import firebase from 'firebase/app';
 
 export default {
 	components: {IonPage},
@@ -50,24 +49,7 @@ export default {
 				});
 
 			await loading.present();
-			if (this.checkLoginData) {
-				try {
-					console.log('here from /login');
-					// await toast({
-					store.commit('setPhone', {phone: this.getPhone});
-					await store.dispatch('login', {phone: this.getPhone});
-					this.$router.push('/smscode');
-					// 	message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
-					// 	duration: 1500,
-					// 	color: 'success'
-					// });
-					// setTimeout(() => {
-					// }, 1500)
-				} catch (e) {
-					console.log(e);
-					throw e;
-				}
-			}
+
 			await loading.dismiss();
 		}
 	},
