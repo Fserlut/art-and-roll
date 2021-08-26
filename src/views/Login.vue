@@ -4,20 +4,14 @@
 			<ion-avatar>
 				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
 			</ion-avatar>
-			<h1 class="text-center">Чтобы продолжить нужно войти в свой профиль</h1>
+			<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
 			<ion-item>
-				<ion-label position="floating">Почта</ion-label>
-				<ion-input ref="login"></ion-input>
-			</ion-item>
-			<ion-item>
-				<ion-label position="floating">Пароль</ion-label>
-				<ion-input ref="password" type="password"></ion-input>
+				<input class="native-input" v-model="phone" type="tel" inputmode="tel" placeholder="+7 (9__) ___-__-__" v-mask="'+7 (9##) ###-##-##'">
 			</ion-item>
 			<div class="text-center mt-2 mb-1">
-				<ion-button size="large" @click="login" color="tertiary">Войти</ion-button>
-			</div>
-			<div class="text-center">
-				<h4 @click="goRegister">Нет аккаунта? Загеристрируйся.</h4>
+				<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
+					Войти
+				</ion-button>
 			</div>
 		</ion-card>
 	</ion-page>
@@ -27,20 +21,26 @@
 import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
-import { IonPage } from '@ionic/vue';
+import {IonPage} from '@ionic/vue';
+import api from "@/api";
+import router from "@/router";
 
 export default {
 	components: {IonPage},
+	data() {
+		return {
+			phone: '',
+		}
+	},
 	name: 'Home',
 	computed: {
-		getLogin() {
-			return this.$refs.login.querySelector('input').value;
-		},
-		getPassword() {
-			return this.$refs.password.querySelector('input').value;
+		validPhone() {
+			let phone = '+' + this.phone.replace(/\D/g, '');
+			return phone.length === 12
 		},
 		checkLoginData() {
-			return (this.getLogin.length > 4 && this.getPassword.length > 4);
+			// Check phone
+			return (true);
 		}
 	},
 	methods: {
@@ -55,26 +55,39 @@ export default {
 				});
 
 			await loading.present();
-			if (this.checkLoginData) {
-				try {
-					await store.dispatch('login', {email: this.getLogin, password: this.getPassword});
-					await toast({
-						message: 'Успешно! Через 1,5 секунды мы вам что-то покажем',
-						duration: 1500,
-						color: 'success'
-					});
-					setTimeout(() => {
-						this.$router.push('/main');
-					}, 1500)
-				} catch (e) {
-					console.log(e);
-					throw e;
-				}
-			}
+
 			await loading.dismiss();
-		},
-		goRegister() {
-			this.$router.push('/register');
+
+			if (this.validPhone) {
+				try {
+					let res = await fetch((api.baseUrl + '/find-user'), {
+						method: 'POST',
+						headers: {
+							'content-type': 'application/json'
+						},
+						body: JSON.stringify({phone: '+' + this.phone.replace(/\D/g, '')})
+					});
+					let user = await res.json();
+					store.commit('setPhone', {phone: '+' + this.phone.replace(/\D/g, '')});
+					if (user.isActive) {
+						this.$router.push('/smscode')
+					} else {
+						this.$router.push('/register');
+					}
+				} catch (e) {
+					toast({
+						message: e.message,
+						duration: 1500,
+						color: 'danger'
+					})
+				}
+			} else {
+				toast({
+					message: 'Неверный номер телефона',
+					duration: 1500,
+					color: 'danger'
+				})
+			}
 		}
 	},
 };
@@ -118,5 +131,15 @@ ion-avatar {
 
 ion-item {
 	padding-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+input{
+	background: transparent!important;
+	border: none!important;
+	outline: none!important;
+	font-size: 22px;
+	width: 100%;
+	text-align: center;
 }
 </style>

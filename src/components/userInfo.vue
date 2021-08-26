@@ -24,6 +24,7 @@ export default {
 	components: { IonModal },
 	computed: {
 		getAvatar() {
+			console.log(this.user);
 			return this.user.avatar;
 		},
 		user() {

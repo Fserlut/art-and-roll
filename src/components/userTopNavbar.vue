@@ -2,7 +2,7 @@
 	<div class="user-top-navbar">
 		<ion-card class="ion-padding-top pt-ios">
 			<ion-card-header>
-				<ion-card-title>{{ getLogin }}</ion-card-title>
+				<ion-card-title>{{ user.login }}</ion-card-title>
 				<ion-icon @click="openModal" size="large" :icon="menuSharp"></ion-icon>
 			</ion-card-header>
 		</ion-card>
@@ -33,9 +33,9 @@ export default {
 		}
 	},
 	computed: {
-		getLogin() {
-			return this.user.email.substr(0, this.user.email.indexOf('@'));
-		},
+		// getLogin() {
+		// 	return this.user.email.substr(0, this.user.email.indexOf('@'));
+		// },
 		user() {
 			return store.getters.user;
 		}
