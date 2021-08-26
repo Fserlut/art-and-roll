@@ -13,6 +13,7 @@ import SmsCode from "@/views/SmsCode";
 const routes = [
 	{
 		path: '/',
+		redirect: '/login',
 	},
 	{
 		path: '/login',
