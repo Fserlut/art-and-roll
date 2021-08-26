@@ -7,7 +7,7 @@ export default {
 			phone: '',
 			name: '',
 			login: '',
-			uid: '',
+			_id: '',
 			avatar: '',
 		}
 	},
@@ -45,6 +45,9 @@ export default {
 		},
 		setAvatar(state, payload) {
 			state.user.avatar = payload.avatar;
+		},
+		setUserId(state, payload) {
+			state.user._id = payload.id
 		},
 		setUser(state, payload) {
 			state.user.avatar = payload.avatar;

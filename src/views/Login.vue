@@ -9,7 +9,7 @@
 				<input class="native-input" v-model="phone" type="tel" inputmode="tel" placeholder="+7 (9__) ___-__-__" v-mask="'+7 (9##) ###-##-##'">
 			</ion-item>
 			<div class="text-center mt-2 mb-1">
-				<ion-button id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
+				<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
 					Войти
 				</ion-button>
 			</div>
@@ -22,6 +22,8 @@ import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
 import {IonPage} from '@ionic/vue';
+import api from "@/api";
+import router from "@/router";
 
 export default {
 	components: {IonPage},
@@ -32,10 +34,10 @@ export default {
 	},
 	name: 'Home',
 	computed: {
-		getPhone() {
-			return this.$refs.phone.querySelector('input').value;
+		validPhone() {
+			let phone = '+' + this.phone.replace(/\D/g, '');
+			return phone.length === 12
 		},
-
 		checkLoginData() {
 			// Check phone
 			return (true);
@@ -55,6 +57,37 @@ export default {
 			await loading.present();
 
 			await loading.dismiss();
+
+			if (this.validPhone) {
+				try {
+					let res = await fetch((api.baseUrl + '/find-user'), {
+						method: 'POST',
+						headers: {
+							'content-type': 'application/json'
+						},
+						body: JSON.stringify({phone: '+' + this.phone.replace(/\D/g, '')})
+					});
+					let user = await res.json();
+					if (!user) {
+						console.log('old user');
+					} else {
+						store.commit('setPhone', {phone: '+' + this.phone.replace(/\D/g, '')});
+						router.push('/register');
+					}
+				} catch (e) {
+					toast({
+						message: e.message,
+						duration: 1500,
+						color: 'danger'
+					})
+				}
+			} else {
+				toast({
+					message: 'Неверный номер телефона',
+					duration: 1500,
+					color: 'danger'
+				})
+			}
 		}
 	},
 };

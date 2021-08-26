@@ -6,14 +6,17 @@
 			</ion-avatar>
 			<h1 class="text-center">Введите код из смс.</h1>
 			<ion-item>
-				<ion-label position="floating">Код</ion-label>
-				<ion-input inputmode="tel" type="tel" ref="smscode"></ion-input>
+				<input class="native-input" v-model="smscode" type="tel" inputmode="tel" placeholder="# # # #" v-mask="'# # # #'">
 			</ion-item>
 			<div class="text-center mt-2 mb-1">
-				<ion-button id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">Войти
+				<div class="resend">
+					<span v-if="callBack">Отправить код повторно<br>можно будет через: {{backTime}}</span>
+					<span @click="sendCode" class="link-btn" v-else>Отправить еще раз</span>
+				</div>
+				<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
+					Войти
 				</ion-button>
 			</div>
-			<div id="phone-sign-in-recaptcha"></div>
 		</ion-card>
 	</ion-page>
 </template>
@@ -24,61 +27,113 @@ import store from "@/store";
 import toast from "@/utils/toast";
 import {IonPage} from '@ionic/vue';
 import firebase from 'firebase/app';
+import api from "@/api";
+import auth from '@/utils/auth';
 
 export default {
 	components: {IonPage},
-	name: 'Home',
+	data() {
+		return {
+			user: {
+				phone: '+79991378191',
+				name: 'Илья',
+				login: 'zakharovvilya',
+				findSpheres: {},
+				mySpheres: {},
+			},
+			smscode: '',
+			callBack: false,
+			backTime: 60,
+			type: 'Register',
+		}
+	},
+	name: 'smsCode',
 	computed: {
 		getCode() {
 			return this.$refs.smscode.querySelector('input').value;
 		},
-
-		checkLoginData() {
-			// Check phone
-			return (true);
-		}
 	},
 	methods: {
-		async login() {
-			const loading = await loadingController
-				.create({
-					spinner: null,
-					message: 'Проверяем данные...',
-					translucent: true,
-					cssClass: 'custom-class custom-loading',
-					backdropDismiss: true
-				});
-
-			await loading.present();
-			if (this.checkLoginData) {
-				try {
-					await store.dispatch('login', {code: this.getCode});
-					setTimeout(async () => {
-						if (!store.getters.isRegistred) {
-							console.log('Отправить на регистрацию');
-							this.$router.push('/register');
-						} else {
-							this.$router.push('/profile');
-						}
-					}, 1000);
-				} catch (e) {
-					console.log(e);
-					throw e;
-				}
+		resendCalc() {
+			this.code = '';
+			if (!this.backTime) {
+				this.callBack = false
+				this.backTime = 60
+				return false
 			}
-			await loading.dismiss();
+
+			this.callBack = true
+			setTimeout(() => {
+				this.backTime--
+				this.resendCalc()
+			}, 1000)
+		},
+		async sendCode() {
+			this.resendCalc();
+			try {
+				let data = await auth.sendCode(this.user, this.type);
+				store.commit('setUserId', {id: data.userId});
+				store.commit('setPhone', {phone: this.user.phone});
+				if (data.success) {
+					toast({
+						message: 'Смс с кодом успешно отправлено',
+						color: 'success',
+						duration: 1000
+					})
+				} else {
+					toast({
+						message: 'Произошла ошибка при отправке смс...',
+						color: 'danger',
+						duration: 1000,
+					})
+				}
+			} catch (e) {
+				toast({
+					message: 'Произошла ошибка при отправке смс...',
+					color: 'danger',
+					duration: 1000,
+				})
+			}
+		},
+		async login() {
+			let res = await auth.checkCode(this.smscode.split(' ').join(''));
+			if (res.error) {
+				toast({
+					message: res.error.message,
+					color: 'danger',
+					duration: 1000,
+				})
+				return
+			}
+			toast({
+				message: 'Успешно! Перенапровляю в профиль',
+				color: 'success',
+				duration: 1000
+			});
+			setTimeout(() => {
+				this.$router.push('/profile');
+			}, 1100);
 		}
 	},
 	mounted() {
+		this.sendCode();
 	}
 };
 </script>
 
 <style scoped>
+.resend{
+	font-weight: bold;
+	margin-bottom: 20px;
+}
 .ion-page {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+ion-card{
+	min-width: 350px;
 }
 
 ion-card,
@@ -109,8 +164,17 @@ ion-avatar {
 	left: 50%;
 	transform: translateX(-50%);
 }
-
 ion-item {
 	padding-right: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+input{
+	background: transparent!important;
+	border: none!important;
+	outline: none!important;
+	font-size: 22px;
+	width: 100%;
+	text-align: center;
 }
 </style>
