@@ -34,13 +34,6 @@ export default {
 	components: {IonPage},
 	data() {
 		return {
-			user: {
-				phone: '+79991378191',
-				name: 'Илья',
-				login: 'zakharovvilya',
-				findSpheres: {},
-				mySpheres: {},
-			},
 			smscode: '',
 			callBack: false,
 			backTime: 60,
@@ -49,6 +42,9 @@ export default {
 	},
 	name: 'smsCode',
 	computed: {
+		user() {
+			return this.$store.getters.user;
+		},
 		getCode() {
 			return this.$refs.smscode.querySelector('input').value;
 		},
@@ -105,6 +101,8 @@ export default {
 				})
 				return
 			}
+			this.$store.commit('setUser', res.data.user);
+			localStorage.setItem('token', res.data.tokens.accessToken);
 			toast({
 				message: 'Успешно! Перенапровляю в профиль',
 				color: 'success',

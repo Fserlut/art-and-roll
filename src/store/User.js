@@ -54,8 +54,6 @@ export default {
 			state.user.name = payload.name;
 			state.user.login = payload.login;
 			state.user.phone = payload.phone;
-			state.user.mySpheres = payload.mySpheres;
-			state.user.findSpheres = payload.findSpheres;
 		},
 		clearUser(state) {
 			console.log('clear data');

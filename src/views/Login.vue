@@ -68,11 +68,11 @@ export default {
 						body: JSON.stringify({phone: '+' + this.phone.replace(/\D/g, '')})
 					});
 					let user = await res.json();
-					if (!user) {
-						console.log('old user');
+					store.commit('setPhone', {phone: '+' + this.phone.replace(/\D/g, '')});
+					if (user.isActive) {
+						this.$router.push('/smscode')
 					} else {
-						store.commit('setPhone', {phone: '+' + this.phone.replace(/\D/g, '')});
-						router.push('/register');
+						this.$router.push('/register');
 					}
 				} catch (e) {
 					toast({

@@ -14,7 +14,7 @@ export default {
 		return data;
 	},
 	async checkCode(code) {
-		let phone = '+79991378191';
+		let phone = store.getters.userPhone;
 		let res = await fetch(api.baseUrl + '/check-code', {
 			method: 'POST',
 			headers: {

@@ -26,12 +26,14 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import store from "@/store";
 
 defineCustomElements(window);
 
 let app = createApp(App)
 	.use(IonicVue)
 	.use(VueTheMask)
+	.use(store)
 	.use(router);
 
 router.isReady().then(() => {
