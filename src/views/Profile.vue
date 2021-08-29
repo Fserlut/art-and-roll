@@ -2,7 +2,7 @@
 	<ion-page>
 		<UserTopNavbar/>
 		<div class="user-info-block">
-			<UserInfo />
+			<UserInfo :user="user" />
 		</div>
 		<Navigations/>
 	</ion-page>
@@ -20,7 +20,7 @@ export default {
 		user() {
 			return this.$store.getters.user;
 		}
-	}
+	},
 }
 </script>
 

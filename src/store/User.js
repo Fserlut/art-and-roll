@@ -17,7 +17,11 @@ export default {
 		userPhone: s => s.user.phone,
 		isAuth: s => s.isAuth,
 	},
-	actions: {},
+	actions: {
+		async updateUser(state) {
+
+		}
+	},
 	mutations: {
 		setAuth(state, payload) {
 			state.isAuth = payload;
