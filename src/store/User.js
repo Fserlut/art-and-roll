@@ -3,11 +3,11 @@ import firebase from "firebase";
 export default {
 	state: {
 		isRegistred: false,
+		isAuth: false,
 		user: {
 			phone: '',
 			name: '',
 			login: '',
-			_id: '',
 			avatar: '',
 		}
 	},
@@ -15,28 +15,13 @@ export default {
 		user: s => s.user,
 		isRegistred: s => s.isRegistred,
 		userPhone: s => s.user.phone,
+		isAuth: s => s.isAuth,
 	},
-	actions: {
-		async setUserInfoToDB(state, payload) {
-			await firebase.database().ref(`/users/${state.state.user.uid}/info`).update({
-				avatar: payload.avatarUrl
-			});
-		},
-		async fetchUserData(state) {
-			let uid = await state.dispatch('getUid');
-			console.log('uid = ', uid);
-			await firebase.database().ref(`/users/${uid}/info`).get().then( async (snapshot) => {
-				if (snapshot.exists()) {
-					await state.commit('setUser', snapshot.val());
-				} else {
-					console.log("No data available");
-				}
-			}).catch((error) => {
-				console.error(error);
-			});;
-		}
-	},
+	actions: {},
 	mutations: {
+		setAuth(state, payload) {
+			state.isAuth = payload;
+		},
 		setPhone(state, payload) {
 			state.user.phone = payload.phone;
 		},

@@ -22,13 +22,11 @@
 </template>
 
 <script>
-import {loadingController} from '@ionic/vue';
 import store from "@/store";
 import toast from "@/utils/toast";
 import {IonPage} from '@ionic/vue';
-import firebase from 'firebase/app';
-import api from "@/api";
 import auth from '@/utils/auth';
+import mutations from "@/utils/mutations";
 
 export default {
 	components: {IonPage},
@@ -37,7 +35,6 @@ export default {
 			smscode: '',
 			callBack: false,
 			backTime: 60,
-			type: 'Register',
 		}
 	},
 	name: 'smsCode',
@@ -50,6 +47,9 @@ export default {
 		},
 	},
 	methods: {
+		clearCode () {
+			this.smscode = '';
+		},
 		resendCalc() {
 			this.code = '';
 			if (!this.backTime) {
@@ -67,7 +67,7 @@ export default {
 		async sendCode() {
 			this.resendCalc();
 			try {
-				let data = await auth.sendCode(this.user, this.type);
+				let data = await auth.sendCode(this.user, this.$route.query.type);
 				store.commit('setUserId', {id: data.userId});
 				store.commit('setPhone', {phone: this.user.phone});
 				if (data.success) {
@@ -77,40 +77,22 @@ export default {
 						duration: 1000
 					})
 				} else {
-					toast({
-						message: 'Произошла ошибка при отправке смс...',
-						color: 'danger',
-						duration: 1000,
-					})
+					this.$store.commit('setError', {message: 'Произошла ошибка при отправке смс...'});
 				}
 			} catch (e) {
-				toast({
-					message: 'Произошла ошибка при отправке смс...',
-					color: 'danger',
-					duration: 1000,
-				})
+				this.$store.commit('setError', {message: 'Произошла ошибка при отправке смс...'})
 			}
 		},
 		async login() {
-			let res = await auth.checkCode(this.smscode.split(' ').join(''));
-			if (res.error) {
-				toast({
-					message: res.error.message,
-					color: 'danger',
-					duration: 1000,
-				})
-				return
+			try {
+				await this.$store.dispatch('login', {phone: this.user.phone, code: mutations.getClearCode(this.smscode)});
+				setTimeout(() => {
+					this.clearCode();
+					this.$router.push('/profile');
+				}, 1100);
+			} catch (e) {
+				console.log(e);
 			}
-			this.$store.commit('setUser', res.data.user);
-			localStorage.setItem('token', res.data.tokens.accessToken);
-			toast({
-				message: 'Успешно! Перенапровляю в профиль',
-				color: 'success',
-				duration: 1000
-			});
-			setTimeout(() => {
-				this.$router.push('/profile');
-			}, 1100);
 		}
 	},
 	mounted() {

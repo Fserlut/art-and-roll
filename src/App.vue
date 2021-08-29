@@ -9,7 +9,6 @@
 import {IonApp, IonRouterOutlet} from '@ionic/vue';
 import {defineComponent} from 'vue';
 import Error from '@/components/error';
-import store from "@/store";
 
 export default defineComponent({
 	name: 'App',
@@ -18,5 +17,10 @@ export default defineComponent({
 		IonRouterOutlet,
 		Error
 	},
+	async created() {
+		if (localStorage.getItem('token')) {
+			await this.$store.dispatch('checkAuth');
+		}
+	}
 });
 </script>

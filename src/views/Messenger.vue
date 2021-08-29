@@ -1,14 +1,16 @@
 <template>
 	<ion-page>
-		Messenger Page
+		<ion-toolbar class="pt-ios">
+			<ion-title>Messenger Page</ion-title>
+		</ion-toolbar>
 		<Navigations />
 	</ion-page>
 </template>
 
 <script>
 import Navigations from '@/components/navigations';
-import { IonPage } from '@ionic/vue';
+import { IonPage, IonToolbar, IonTitle } from '@ionic/vue';
 export default {
-	components: {Navigations, IonPage}
+	components: { Navigations, IonPage, IonToolbar, IonTitle }
 };
 </script>
