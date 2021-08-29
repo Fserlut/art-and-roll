@@ -1,28 +1,18 @@
-import api from "@/api";
 import store from "@/store";
+import $api from "@/utils/backend";
 
 export default {
 	async sendCode(user, type) {
-		let res = await fetch(api.baseUrl + '/send-verify', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({...user, type})
-		});
-		let data = await res.json();
+		let { data } = await $api.post('/send-verify', {...user, type});
 		return data;
 	},
 	async checkCode(code) {
 		let phone = store.getters.userPhone;
-		let res = await fetch(api.baseUrl + '/check-code', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json'
-			},
-			body: JSON.stringify({code, phone})
-		});
-		let data = await res.json();
-		return data;
+		try {
+			let { data } = await $api.post('/check-code', {code, phone});
+			return data;
+		} catch (e) {
+			return e
+		}
 	}
 }

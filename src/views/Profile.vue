@@ -13,13 +13,12 @@ import Navigations from '@/components/navigations';
 import UserTopNavbar from '@/components/userTopNavbar';
 import UserInfo from "@/components/userInfo";
 import {IonPage} from '@ionic/vue';
-import store from "@/store";
 
 export default {
 	components: {Navigations, UserTopNavbar, UserInfo, IonPage},
 	computed: {
 		user() {
-			return store.getters.user;
+			return this.$store.getters.user;
 		}
 	}
 }

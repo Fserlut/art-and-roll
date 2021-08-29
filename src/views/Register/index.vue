@@ -46,7 +46,7 @@ export default {
 			this.user = {...this.user, ...userData, phone: store.getters.user.phone}
 			store.commit('setUser', this.user);
 			await loading.dismiss();
-			this.$router.push('/smscode');
+			await this.$router.push('/smscode?type=Register');
 		},
 		goLogin() {
 			this.$router.push('/login');

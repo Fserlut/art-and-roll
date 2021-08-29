@@ -20,6 +20,8 @@
 
 <script>
 
+import UserService from "@/backend/user";
+
 export default {
 	computed: {
 		getLogin() {
@@ -30,8 +32,36 @@ export default {
 		}
 	},
 	methods: {
-		nextStep() {
-			this.$emit('nextStep', {login: this.getLogin, name: this.getName});
+		clearLogin() {
+			this.$refs.login.querySelector('input').value = ''
+		},
+		clearName() {
+			this.$refs.name.querySelector('input').value = ''
+		},
+		validName() {
+			if (this.$refs.name.querySelector('input').value.length > 0) {
+				return false
+			}
+			this.$store.commit('setError', {message: 'Пропущено поле Имя'});
+			return true
+		},
+		async validLogin() {
+			let login = this.$refs.login.querySelector('input').value;
+			if (login.length > 0) {
+				let { data } = await UserService.validLogin(login);
+				data.isClosed ? this.$store.commit('setError', {message: 'Логин уже занят'}) : '';
+				return data.isClosed;
+			}
+			this.$store.commit('setError', {message: 'Пропущено поле Логин'});
+			return true;
+		},
+		async nextStep() {
+			let loginIsValid = await this.validLogin();
+			if (!loginIsValid && !this.validName()) {
+				this.$emit('nextStep', {login: this.getLogin, name: this.getName});
+				this.clearLogin();
+				this.clearName();
+			}
 		}
 	}
 };

@@ -10,7 +10,6 @@
 			</ion-tab-button>
 
 			<ion-tab-button tab="messenger" href="/messenger">
-				<ion-badge color="danger">66</ion-badge>
 				<ion-icon :icon="chatbubbleEllipsesSharp"></ion-icon>
 			</ion-tab-button>
 

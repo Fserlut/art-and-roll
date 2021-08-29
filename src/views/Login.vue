@@ -19,11 +19,9 @@
 
 <script>
 import {loadingController} from '@ionic/vue';
-import store from "@/store";
-import toast from "@/utils/toast";
 import {IonPage} from '@ionic/vue';
-import api from "@/api";
-import router from "@/router";
+import mutations from "@/utils/mutations";
+import UserService from '@/backend/user';
 
 export default {
 	components: {IonPage},
@@ -38,12 +36,11 @@ export default {
 			let phone = '+' + this.phone.replace(/\D/g, '');
 			return phone.length === 12
 		},
-		checkLoginData() {
-			// Check phone
-			return (true);
-		}
 	},
 	methods: {
+		clearPhone() {
+			this.phone = '';
+		},
 		async login() {
 			const loading = await loadingController
 				.create({
@@ -56,38 +53,23 @@ export default {
 
 			await loading.present();
 
-			await loading.dismiss();
-
 			if (this.validPhone) {
 				try {
-					let res = await fetch((api.baseUrl + '/find-user'), {
-						method: 'POST',
-						headers: {
-							'content-type': 'application/json'
-						},
-						body: JSON.stringify({phone: '+' + this.phone.replace(/\D/g, '')})
-					});
-					let user = await res.json();
-					store.commit('setPhone', {phone: '+' + this.phone.replace(/\D/g, '')});
-					if (user.isActive) {
-						this.$router.push('/smscode')
+					let { data } = await UserService.findUser(mutations.getClearPhone(this.phone));
+					await this.$store.commit('setPhone', {phone: mutations.getClearPhone(this.phone)});
+					this.clearPhone();
+					if (data.isActive) {
+						await this.$router.push('/smscode?type=Login')
 					} else {
-						this.$router.push('/register');
+						await this.$router.push('/register');
 					}
 				} catch (e) {
-					toast({
-						message: e.message,
-						duration: 1500,
-						color: 'danger'
-					})
+					this.$store.commit('setError', {message: e.response.data.message});
 				}
 			} else {
-				toast({
-					message: 'Неверный номер телефона',
-					duration: 1500,
-					color: 'danger'
-				})
+				this.$store.commit('setError', {message: 'Неверный номер телефона'});
 			}
+			await loading.dismiss();
 		}
 	},
 };
