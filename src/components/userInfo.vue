@@ -2,7 +2,7 @@
 	<ion-card>
 		<div class="avatar text-center">
 			<div class="relative">
-				<div class="avatar-img" :style="'background: url(' + getAvatar + ')'">
+				<div class="avatar-img" :style="'background: url(' + user.avatar + ')'">
 					<ion-icon @click="presentActionSheet" size="medium" :icon="addSharp"></ion-icon>
 				</div>
 			</div>
@@ -15,23 +15,35 @@
 </template>
 
 <script>
-import store from "@/store";
-import { addSharp } from 'ionicons/icons';
-import { actionSheetController, IonModal } from '@ionic/vue';
-import { usePhotoGallery } from "@/utils/takePhoto";
+import {addSharp} from 'ionicons/icons';
+import {actionSheetController, IonModal, loadingController} from '@ionic/vue';
+import {usePhotoGallery} from "@/utils/takePhoto";
 
 export default {
-	components: { IonModal },
-	computed: {
-		getAvatar() {
-			console.log(this.user);
-			return this.user.avatar;
-		},
-		user() {
-			return store.getters.user;
+	components: {IonModal},
+	props: {
+		user: {
+			type: Object,
+			required: true,
+			default: {},
 		}
 	},
 	methods: {
+		async updatePhoto() {
+			await this.takePhoto();
+			const loading = await loadingController.create({
+				spinner: null,
+				message: 'Сохраняем фотографию...',
+				translucent: true,
+				cssClass: 'custom-class custom-loading',
+				backdropDismiss: true
+			});
+			await loading.present();
+			setTimeout(async () => {
+				await loading.dismiss();
+				this.$router.go();
+			}, 1000);
+		},
 		async presentActionSheet() {
 			const actionSheet = await actionSheetController
 				.create({
@@ -40,9 +52,7 @@ export default {
 					buttons: [
 						{
 							text: 'Сделать фотографию',
-							handler: async () => {
-								await this.takePhoto();
-							},
+							handler: this.updatePhoto,
 						},
 						{
 							text: 'Загрузить фотографию',
@@ -61,8 +71,7 @@ export default {
 				})
 			await actionSheet.present();
 
-			const { role } = await actionSheet.onDidDismiss();
-			console.log('onDidDismiss resolved with role', role);
+			const {role} = await actionSheet.onDidDismiss();
 		}
 	},
 	setup() {
