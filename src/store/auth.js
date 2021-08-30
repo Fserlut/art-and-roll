@@ -8,9 +8,10 @@ export default {
 	actions: {
 		async checkAuth(state) {
 			try {
-				const { data } = await axios.get(api.baseUrl + '/refresh', {
-					withCredentials: true,
+				const { data } = await axios.post(api.baseUrl + '/refresh', {
+					refreshToken: localStorage.getItem('refreshToken')
 				});
+				await localStorage.setItem('refreshToken', data.tokens.refreshToken);
 				await localStorage.setItem('token', data.tokens.accessToken);
 				await state.commit('setUser', data.user);
 				await state.commit('setAuth', true);
@@ -22,6 +23,7 @@ export default {
 		async login(state, {phone, code}) {
 			try {
 				const { data } = await AuthService.login(phone, code);
+				localStorage.setItem('refreshToken', data.data.tokens.refreshToken);
 				localStorage.setItem('token', data.data.tokens.accessToken);
 				state.commit('setUser', data.data.user);
 				state.commit('setAuth', true);

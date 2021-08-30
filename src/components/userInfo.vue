@@ -31,18 +31,6 @@ export default {
 	methods: {
 		async updatePhoto() {
 			await this.takePhoto();
-			const loading = await loadingController.create({
-				spinner: null,
-				message: 'Сохраняем фотографию...',
-				translucent: true,
-				cssClass: 'custom-class custom-loading',
-				backdropDismiss: true
-			});
-			await loading.present();
-			setTimeout(async () => {
-				await loading.dismiss();
-				this.$router.go();
-			}, 1000);
 		},
 		async presentActionSheet() {
 			const actionSheet = await actionSheetController
