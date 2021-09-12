@@ -9,6 +9,16 @@
 			<ion-input ref="name"></ion-input>
 		</ion-item>
 		<ion-item>
+			<ion-label position="floating">Дата рождения</ion-label>
+			<ion-datetime
+				ref="birthday"
+				display-format="D MMM YYYY"
+				min="1955-01-01"
+				month-short-names="янв, фев, март, апр, май, июнь, июль, авг, сен, окт, нояб, дек">
+
+			</ion-datetime>
+		</ion-item>
+		<ion-item>
 			<ion-label position="floating">Логин</ion-label>
 			<ion-input inputmode="email" type="text" ref="login"></ion-input>
 		</ion-item>
@@ -29,6 +39,9 @@ export default {
 		},
 		getName() {
 			return this.$refs.name.querySelector('input').value;
+		},
+		getBirthday() {
+			return this.$refs.birthday.querySelector('input').value;
 		}
 	},
 	methods: {
@@ -45,6 +58,13 @@ export default {
 			this.$store.commit('setError', {message: 'Пропущено поле Имя'});
 			return true
 		},
+		validBirthDay() {
+			if (this.$refs.birthday.querySelector('input').value != '') {
+				return false
+			}
+			this.$store.commit('setError', {message: 'Заполните дату рождения'});
+			return true
+		},
 		async validLogin() {
 			let login = this.$refs.login.querySelector('input').value;
 			if (login.length > 0) {
@@ -57,8 +77,8 @@ export default {
 		},
 		async nextStep() {
 			let loginIsValid = await this.validLogin();
-			if (!loginIsValid && !this.validName()) {
-				this.$emit('nextStep', {login: this.getLogin, name: this.getName});
+			if (!loginIsValid && !this.validName() && !this.validBirthDay()) {
+				this.$emit('nextStep', {login: this.getLogin, name: this.getName, birthday: +new Date(this.getBirthday)});
 				this.clearLogin();
 				this.clearName();
 			}

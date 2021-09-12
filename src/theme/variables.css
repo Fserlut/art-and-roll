@@ -5,8 +5,28 @@ http://ionicframework.com/docs/theming/ */
 	position: relative;
 }
 
+.w-70{
+	width: 70%;
+}
+
+.w-30{
+	width: 30%;
+}
+
+.w-40{
+	width: 40%;
+}
+
+.w-60{
+	width: 60%;
+}
+
 .w-100 {
 	width: 100%;
+}
+
+.wrap{
+	flex-wrap: wrap;
 }
 
 .d-flex {

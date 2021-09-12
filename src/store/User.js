@@ -7,10 +7,15 @@ export default {
 			name: '',
 			login: '',
 			avatar: '',
+			artsCounter: 0,
+			rollsCounter: 0,
+			birthday: '',
 		}
 	},
 	getters: {
 		user: s => s.user,
+		getArts: s => s.user.artsCounter,
+		getRolls: s => s.user.rollsCounter,
 		isRegistred: s => s.isRegistred,
 		userPhone: s => s.user.phone,
 		isAuth: s => s.isAuth,
@@ -41,6 +46,9 @@ export default {
 			state.user.name = payload.name;
 			state.user.login = payload.login;
 			state.user.phone = payload.phone;
+			state.user.artsCounter = payload.artsCounter;
+			state.user.rollsCounter = payload.rollsCounter;
+			state.user.birthday = payload.birthday;
 		},
 		clearUser(state) {
 			console.log('clear data');

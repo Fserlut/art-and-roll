@@ -2,7 +2,7 @@
 	<ion-page>
 		<UserTopNavbar/>
 		<div class="user-info-block">
-			<UserInfo @openEditor="openEditor" :user="user" />
+			<UserInfo :user="user" />
 		</div>
 		<Navigations/>
 	</ion-page>
