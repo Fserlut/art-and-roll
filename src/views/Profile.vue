@@ -2,7 +2,7 @@
 	<ion-page>
 		<UserTopNavbar/>
 		<div class="user-info-block">
-			<UserInfo :user="user" />
+			<UserInfo @openEditor="openEditor" :user="user" />
 		</div>
 		<Navigations/>
 	</ion-page>
@@ -12,10 +12,10 @@
 import Navigations from '@/components/navigations';
 import UserTopNavbar from '@/components/userTopNavbar';
 import UserInfo from "@/components/userInfo";
-import {IonPage} from '@ionic/vue';
+import { IonPage } from '@ionic/vue';
 
 export default {
-	components: {Navigations, UserTopNavbar, UserInfo, IonPage},
+	components: { Navigations, UserTopNavbar, UserInfo, IonPage },
 	computed: {
 		user() {
 			return this.$store.getters.user;

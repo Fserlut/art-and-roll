@@ -1,5 +1,6 @@
 import auth from './auth';
 import user from './User';
+import imageEditor from "@/store/imageEditor";
 import {createStore} from 'vuex';
 
 const store = createStore({
@@ -19,7 +20,8 @@ const store = createStore({
 	},
 	modules:{
 		auth,
-		user
+		user,
+		imageEditor
 	}
 });
 

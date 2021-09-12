@@ -1,36 +1,45 @@
 import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
-import {Filesystem, Directory} from '@capacitor/filesystem'
-import {Storage} from '@capacitor/storage'
 import $api from "@/utils/backend";
 import store from "@/store";
+import router from "@/router";
 
 export function usePhotoGallery() {
+	let photo = {};
+
+	const loadGallery = async () => {
+		const cameraPhoto = await Camera.getPhoto({
+			resultType: CameraResultType.DataUrl,
+			source: CameraSource.Photos,
+			quality: 80
+		});
+		photo = {
+			date: +new Date(),
+			base64: cameraPhoto.dataUrl,
+			format: cameraPhoto.format
+		};
+		store.commit('clearTargetImage');
+		store.commit('setTargetImage', { photo })
+	};
 
 	const takePhoto = async () => {
 		const cameraPhoto = await Camera.getPhoto({
-			resultType: CameraResultType.Base64,
+			resultType: CameraResultType.DataUrl,
 			source: CameraSource.Camera,
 			quality: 80
 		});
-		try {
-			const { data }  = await $api.post('/update-avatar', {
-				base64: cameraPhoto.base64String,
-				login: store.getters.user.login
-			});
-			if (data.data.success) {
-				store.commit('setUser', data.data.user);
-			} else {
-				store.commit('setError', {message: 'Ошибка при загрузке фотографии, попробейте еще раз'});
-			}
-		} catch (e) {
-			console.log(e);
-			store.commit('setError', {message: e.response.data.message});
-			throw e
-		}
+		photo = {
+			date: +new Date(),
+			base64: cameraPhoto.dataUrl,
+			format: cameraPhoto.format
+		};
+		store.commit('clearTargetImage');
+		store.commit('setTargetImage', { photo })
 	};
 
 	return {
-		takePhoto
+		takePhoto,
+		photo,
+		loadGallery
 	};
 }
 

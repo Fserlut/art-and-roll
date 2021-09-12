@@ -31,6 +31,16 @@ export default {
 	methods: {
 		async updatePhoto() {
 			await this.takePhoto();
+			if (this.$store.getters.getTargetImage) {
+				this.$router.push('/edit-photo');
+			}
+		},
+		async updateFromGallery() {
+			await this.loadGallery();
+			if (this.$store.getters.getTargetImage) {
+				this.$router.push('/edit-photo');
+			}
+
 		},
 		async presentActionSheet() {
 			const actionSheet = await actionSheetController
@@ -43,10 +53,8 @@ export default {
 							handler: this.updatePhoto,
 						},
 						{
-							text: 'Загрузить фотографию',
-							handler: () => {
-								console.log('Upload img');
-							},
+							text: 'Загрузить из галереи',
+							handler: this.updateFromGallery,
 						},
 						{
 							text: 'Отменить',
@@ -63,9 +71,9 @@ export default {
 		}
 	},
 	setup() {
-		const {takePhoto} = usePhotoGallery();
+		const {takePhoto, loadGallery, photos} = usePhotoGallery();
 		return {
-			takePhoto, addSharp
+			takePhoto, loadGallery, addSharp, photos
 		}
 	}
 }
