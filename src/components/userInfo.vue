@@ -1,5 +1,8 @@
 <template>
 	<ion-card>
+		<ion-card-content>
+			<ion-card-title class="user-name">{{ user.name }}</ion-card-title>
+		</ion-card-content>
 		<div class="main-parent-profile d-flex wrap">
 			<div class="avatar text-center w-40">
 				<div class="relative">
@@ -9,7 +12,6 @@
 				</div>
 			</div>
 			<div class="w-60 user-profile-right">
-				<ion-card-title class="user-name">{{ user.name }}</ion-card-title>
 				<div class="arts-and-rolls-info">
 					<div class="info-counter">
 						<ion-card-title>{{ nFormatter($store.getters.getArts) }}</ion-card-title>
@@ -20,11 +22,14 @@
 						<ion-card-title>роллов</ion-card-title>
 					</div>
 				</div>
-				<ion-card-content>
-					<ion-button expand="block">Редактировать профиль</ion-button>
-				</ion-card-content>
+				<div class="user-description">
+					Описание профиля
+				</div>
 			</div>
 		</div>
+		<ion-card-content>
+			<ion-button expand="block">Редактировать профиль</ion-button>
+		</ion-card-content>
 	</ion-card>
 </template>
 
@@ -41,6 +46,14 @@ export default {
 			required: true,
 			default: {},
 		}
+	},
+	computed: {
+		getAge() {
+			return (new Date().getFullYear() - new Date(this.user.birthday * 1).getFullYear());
+		}
+	},
+	mounted() {
+		console.log(this.user);
 	},
 	methods: {
 		nFormatter(num) {
@@ -112,7 +125,6 @@ export default {
 
 .user-name{
 	text-align: center;
-	margin-bottom: 10px;
 }
 
 .user-profile-right{
@@ -135,12 +147,11 @@ export default {
 }
 
 .avatar-img {
-	width: 105px;
-	height: 105px;
+	width: 130px;
+	height: 130px;
 	border-radius: 50%;
 	background-size: cover !important;
 	background-position: center center !important;
-	margin: 15px auto;
 	position: relative;
 }
 

@@ -67,6 +67,7 @@ export default {
 		async sendCode() {
 			this.resendCalc();
 			try {
+				console.log('user store = ', this.user);
 				let data = await auth.sendCode(this.user, this.$route.query.type);
 				store.commit('setUserId', {id: data.userId});
 				store.commit('setPhone', {phone: this.user.phone});

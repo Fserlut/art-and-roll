@@ -31,6 +31,7 @@ export default {
 	methods: {
 		setNextStep(userData) {
 			this.user = {...this.user, ...userData}
+			console.log('user = ', this.user);
 			this.step++;
 		},
 		async register(userData) {
@@ -44,6 +45,7 @@ export default {
 				});
 			await loading.present();
 			this.user = {...this.user, ...userData, phone: store.getters.user.phone}
+			console.log('register user = ', this.user);
 			store.commit('setUser', this.user);
 			await loading.dismiss();
 			await this.$router.push('/smscode?type=Register');

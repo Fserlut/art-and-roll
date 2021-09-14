@@ -1,6 +1,5 @@
 import axios from "axios";
 import api from "@/api";
-import store from "@/store";
 
 const $api = axios.create({
 	withCredentials: true,

@@ -42,13 +42,7 @@ export default {
 			state.user._id = payload.id
 		},
 		setUser(state, payload) {
-			state.user.avatar = payload.avatar;
-			state.user.name = payload.name;
-			state.user.login = payload.login;
-			state.user.phone = payload.phone;
-			state.user.artsCounter = payload.artsCounter;
-			state.user.rollsCounter = payload.rollsCounter;
-			state.user.birthday = payload.birthday;
+			state.user = {...payload};
 		},
 		clearUser(state) {
 			console.log('clear data');

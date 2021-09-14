@@ -12,6 +12,7 @@
 import Navigations from '@/components/navigations';
 import UserTopNavbar from '@/components/userTopNavbar';
 import UserInfo from "@/components/userInfo";
+import UserService from "@/utils/user";
 import { IonPage } from '@ionic/vue';
 
 export default {
@@ -21,6 +22,15 @@ export default {
 			return this.$store.getters.user;
 		}
 	},
+	methods: {
+		async getFullUserData() {
+			let res = await UserService.getUserData();
+			console.log(res);
+		}
+	},
+	mounted() {
+		this.getFullUserData();
+	}
 }
 </script>
 
