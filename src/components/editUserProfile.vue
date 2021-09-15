@@ -29,12 +29,10 @@ import {
 	IonToolbar,
 	modalController,
 	IonIcon,
-	loadingController,
 	IonList,
 	IonItem,
 } from '@ionic/vue';
 import {chevronBackSharp} from 'ionicons/icons';
-import store from "@/store";
 
 export default {
 	data() {

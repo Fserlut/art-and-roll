@@ -35,7 +35,7 @@
 
 <script>
 import {addSharp} from 'ionicons/icons';
-import {actionSheetController, IonModal, loadingController} from '@ionic/vue';
+import {actionSheetController, IonModal} from '@ionic/vue';
 import {usePhotoGallery} from "@/utils/takePhoto";
 
 export default {
@@ -51,9 +51,6 @@ export default {
 		getAge() {
 			return (new Date().getFullYear() - new Date(this.user.birthday * 1).getFullYear());
 		}
-	},
-	mounted() {
-		console.log(this.user);
 	},
 	methods: {
 		nFormatter(num) {

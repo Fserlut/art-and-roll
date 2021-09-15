@@ -12,9 +12,7 @@
 </template>
 
 <script>
-import store from "@/store";
-import toast from "@/utils/toast";
-import {IonPage, loadingController} from '@ionic/vue';
+import {IonPage} from '@ionic/vue';
 import FirstStep from "@/views/Register/components/FirstStep";
 import SecondStep from '@/views/Register/components/SecondStep'
 
@@ -31,23 +29,14 @@ export default {
 	methods: {
 		setNextStep(userData) {
 			this.user = {...this.user, ...userData}
-			console.log('user = ', this.user);
 			this.step++;
 		},
 		async register(userData) {
-			const loading = await loadingController
-				.create({
-					spinner: null,
-					message: 'Создаем профиль',
-					translucent: true,
-					cssClass: 'custom-class custom-loading',
-					backdropDismiss: true
-				});
-			await loading.present();
-			this.user = {...this.user, ...userData, phone: store.getters.user.phone}
-			console.log('register user = ', this.user);
-			store.commit('setUser', this.user);
-			await loading.dismiss();
+			this.$store.commit('setLoading', true);
+
+			this.user = {...this.user, ...userData, phone: this.$store.getters.user.phone}
+			this.$store.commit('setUser', this.user);
+			this.$store.commit('setLoading', false);
 			await this.$router.push('/smscode?type=Register');
 		},
 		goLogin() {

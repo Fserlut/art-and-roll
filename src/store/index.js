@@ -5,7 +5,8 @@ import {createStore} from 'vuex';
 
 const store = createStore({
 	state: {
-		error: null
+		error: null,
+		loading: false,
 	},
 	mutations: {
 		setError(state, error) {
@@ -13,10 +14,14 @@ const store = createStore({
 		},
 		clearError(state) {
 			state.error = null;
+		},
+		setLoading(state, value) {
+			state.loading = value;
 		}
 	},
 	getters: {
 		error: s => s.error,
+		getLoading: s => s.loading,
 	},
 	modules:{
 		auth,

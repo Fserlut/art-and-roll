@@ -1,8 +1,5 @@
 <template>
-	<ion-card>
-		<ion-avatar>
-			<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
-		</ion-avatar>
+	<ion-card style="box-shadow: none">
 		<h1 class="text-center">Чтобы продолжить заполните поля ниже</h1>
 		<ion-item>
 			<ion-label position="floating">Имя</ion-label>
@@ -11,6 +8,8 @@
 		<ion-item>
 			<ion-label position="floating">Дата рождения</ion-label>
 			<ion-datetime
+				cancel-text="Отмена"
+				done-text="Выбрать"
 				ref="birthday"
 				display-format="D MMM YYYY"
 				min="1955-01-01"
@@ -23,7 +22,7 @@
 			<ion-input inputmode="email" type="text" ref="login"></ion-input>
 		</ion-item>
 		<div class="text-center mt-2 mb-1">
-			<ion-button size="large" @click="nextStep" color="tertiary">Продолжить</ion-button>
+			<ion-button size="large" @click="nextStep" color="primary">Продолжить</ion-button>
 		</div>
 	</ion-card>
 </template>
@@ -53,6 +52,10 @@ export default {
 		},
 		validName() {
 			if (this.$refs.name.querySelector('input').value.length > 0) {
+				if (!(/^[а-я]*$/i.test(this.$refs.name.querySelector('input').value))) {
+					this.$store.commit('setError', {message: 'Имя содержит недопустимые символы'});
+					return true;
+				}
 				return false
 			}
 			this.$store.commit('setError', {message: 'Пропущено поле Имя'});
@@ -68,6 +71,10 @@ export default {
 		async validLogin() {
 			let login = this.$refs.login.querySelector('input').value;
 			if (login.length > 0) {
+				if (!(/^[a-z][a-z0-9\._-]*$/i.test(login))) {
+					this.$store.commit('setError', {message: 'В поле логин использаются недопустимые символы'})
+					return true;
+				}
 				let { data } = await UserService.validLogin(login);
 				data.isClosed ? this.$store.commit('setError', {message: 'Логин уже занят'}) : '';
 				return data.isClosed;

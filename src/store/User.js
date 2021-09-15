@@ -45,7 +45,6 @@ export default {
 			state.user = {...payload};
 		},
 		clearUser(state) {
-			console.log('clear data');
 			state.user = {}
 		}
 	},

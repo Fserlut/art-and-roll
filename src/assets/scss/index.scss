@@ -1,0 +1,31 @@
+//variables
+
+@import "./variables/index";
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+* {
+	font-family: 'Ubuntu', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: $fontColor;
+}
+
+// pages
+@import "./pages/login/index";
+@import "./pages/register/index";
+@import "./pages/smsCode/index";
+
+// components
+@import "./components/ionButton";
+@import "./components/ionCard";
+@import "./components/bottomNavbar";
+@import "./components/ionModal";
+@import "./components/ionPicker";
+@import "./components/ionToast";
+@import "./components/loading";
+
+
+.ion-page{
+	background: $backgroundColor;
+}
