@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import store from "@/store";
 import {IonCard, IonCardHeader, IonCardTitle, modalController} from '@ionic/vue';
 import {menuSharp} from 'ionicons/icons';
 
@@ -33,11 +32,8 @@ export default {
 		}
 	},
 	computed: {
-		// getLogin() {
-		// 	return this.user.email.substr(0, this.user.email.indexOf('@'));
-		// },
 		user() {
-			return store.getters.user;
+			return this.$store.getters.user;
 		}
 	},
 	setup() {

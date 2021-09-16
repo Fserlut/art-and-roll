@@ -1,24 +1,22 @@
 <template>
-	<ion-page>
-		<ion-card>
-			<ion-avatar>
-				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
-			</ion-avatar>
-			<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
-			<ion-item>
-				<input class="native-input" v-model="phone" type="tel" inputmode="tel" placeholder="+7 (9__) ___-__-__" v-mask="'+7 (9##) ###-##-##'">
-			</ion-item>
-			<div class="text-center mt-2 mb-1">
-				<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
-					Войти
-				</ion-button>
-			</div>
-		</ion-card>
-	</ion-page>
+	<div class="login-page">
+		<ion-page>
+			<ion-card style="box-shadow: none">
+				<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
+				<ion-item>
+					<input class="native-input" v-model="phone" type="tel" inputmode="tel" placeholder="+7 (9__) ___-__-__" v-mask="'+7 (9##) ###-##-##'">
+				</ion-item>
+				<div class="text-center mt-2 mb-1">
+					<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="primary">
+						Войти
+					</ion-button>
+				</div>
+			</ion-card>
+		</ion-page>
+	</div>
 </template>
 
 <script>
-import {loadingController} from '@ionic/vue';
 import {IonPage} from '@ionic/vue';
 import mutations from "@/utils/mutations";
 import UserService from '@/backend/user';
@@ -31,6 +29,9 @@ export default {
 		}
 	},
 	name: 'Home',
+	mounted() {
+		this.$store.commit('setLoading', false);
+	},
 	computed: {
 		validPhone() {
 			let phone = '+' + this.phone.replace(/\D/g, '');
@@ -42,17 +43,7 @@ export default {
 			this.phone = '';
 		},
 		async login() {
-			const loading = await loadingController
-				.create({
-					spinner: null,
-					message: 'Проверяем данные...',
-					translucent: true,
-					cssClass: 'custom-class custom-loading',
-					backdropDismiss: true
-				});
-
-			await loading.present();
-
+			this.$store.commit('setLoading', true);
 			if (this.validPhone) {
 				try {
 					let { data } = await UserService.findUser(mutations.getClearPhone(this.phone));
@@ -69,59 +60,8 @@ export default {
 			} else {
 				this.$store.commit('setError', {message: 'Неверный номер телефона'});
 			}
-			await loading.dismiss();
+			this.$store.commit('setLoading', false);
 		}
 	},
 };
 </script>
-
-<style scoped>
-.ion-page {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-ion-card,
-ion-item {
-	--background: #fff;
-	color: #000;
-}
-
-ion-card {
-	position: relative;
-	overflow: visible;
-}
-
-ion-card h1 {
-	padding-top: 15px;
-}
-
-ion-avatar img {
-	max-width: 75px !important;
-	width: 75px;
-	height: auto;
-}
-
-ion-avatar {
-	width: 75px;
-	position: absolute;
-	top: -45px;
-	left: 50%;
-	transform: translateX(-50%);
-}
-
-ion-item {
-	padding-right: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-input{
-	background: transparent!important;
-	border: none!important;
-	outline: none!important;
-	font-size: 22px;
-	width: 100%;
-	text-align: center;
-}
-</style>

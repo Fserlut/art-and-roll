@@ -1,0 +1,51 @@
+.login-page{
+	.ion-page {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	ion-item {
+		--background: #fff;
+		color: #000;
+	}
+
+	ion-card {
+		position: relative;
+		overflow: visible;
+		text-align: center;
+	}
+
+	ion-card h1 {
+		font-size: $h1Size;
+		padding-top: 15px;
+	}
+
+	ion-avatar img {
+		max-width: 75px !important;
+		width: 75px;
+		height: auto;
+	}
+
+	ion-avatar {
+		width: 75px;
+		position: absolute;
+		top: -45px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	ion-item {
+		padding-right: 20px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	input{
+		background: transparent!important;
+		border: none!important;
+		outline: none!important;
+		font-size: 22px;
+		width: 100%;
+		text-align: center;
+	}
+}

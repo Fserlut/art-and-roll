@@ -14,7 +14,7 @@
 				</ion-toolbar>
 			</ion-header>
 			<ion-content class="ion-padding">
-				<ion-list>
+				<ion-list lines="none">
 					<ion-item
 						v-for="(item, idx) in menuItems"
 						:key="item.name + idx"
@@ -37,12 +37,10 @@ import {
 	IonToolbar,
 	modalController,
 	IonIcon,
-	loadingController,
 	IonList,
 	IonItem,
 } from '@ionic/vue';
 import {chevronBackSharp} from 'ionicons/icons';
-import store from "@/store";
 
 export default {
 	data() {
@@ -67,22 +65,13 @@ export default {
 					name: 'logout',
 					title: 'Выйти',
 					action: async () => {
-						const loading = await loadingController
-							.create({
-								spinner: null,
-								message: 'Выходим...',
-								translucent: true,
-								cssClass: 'custom-class custom-loading',
-								backdropDismiss: true
-							});
+						this.$store.commit('setLoading', true);
 
-						await loading.present();
-
-						await store.dispatch('logout');
+						await this.$store.dispatch('logout');
 						this.closeModal();
 						setTimeout(async () => {
-							this.$router.push('/login');
-							await loading.dismiss();
+							this.$store.commit('setLoading', false);
+							await this.$router.push('/login');
 						}, 200);
 					},
 				}

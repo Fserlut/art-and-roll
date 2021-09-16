@@ -1,5 +1,12 @@
+import { isPlatform } from "@ionic/core";
+
+const getApiUrl = () => {
+	if (isPlatform('mobileweb')) {
+		return 'http://localhost:5000/api';
+	}
+	return 'https://art-and-roll.ru/api'
+}
+
 export default {
-	baseUrl: 'http://62.84.112.236:5000/api',
-	// baseUrl: 'http://localhost:5000/api',
-	// baseUrl: 'https://art-and-roll-backend.herokuapp.com/api'
+	baseUrl: getApiUrl()
 }

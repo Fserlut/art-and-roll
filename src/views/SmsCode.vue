@@ -1,35 +1,35 @@
 <template>
-	<ion-page>
-		<ion-card>
-			<ion-avatar>
-				<img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
-			</ion-avatar>
-			<h1 class="text-center">Введите код из смс.</h1>
-			<ion-item>
-				<input class="native-input" v-model="smscode" type="tel" inputmode="tel" placeholder="# # # #" v-mask="'# # # #'">
-			</ion-item>
-			<div class="text-center mt-2 mb-1">
-				<div class="resend">
-					<span v-if="callBack">Отправить код повторно<br>можно будет через: {{backTime}}</span>
-					<span @click="sendCode" class="link-btn" v-else>Отправить еще раз</span>
+	<div class="sms-code-page">
+		<ion-page>
+			<ion-icon @click="close" size="large" :icon="closeOutline"></ion-icon>
+			<ion-card style="box-shadow: none">
+				<h1 class="text-center">Введите код из смс.</h1>
+				<ion-item>
+					<input @blur="checkFour" @change="checkFour" @input="checkFour" ref="code" class="native-input" v-model="smscode" type="tel" inputmode="tel" placeholder="# # # #" v-mask="'# # # #'">
+				</ion-item>
+				<div class="text-center mt-2 mb-1">
+					<div class="resend">
+						<span v-if="callBack">Отправить код повторно<br>можно будет через: {{backTime}}</span>
+						<span @click="sendCode" class="link-btn" v-else>Отправить еще раз</span>
+					</div>
+					<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="primary">
+						Войти
+					</ion-button>
 				</div>
-				<ion-button expand="block" id="login-btn" class="login-btn" size="large" @click="login" color="tertiary">
-					Войти
-				</ion-button>
-			</div>
-		</ion-card>
-	</ion-page>
+			</ion-card>
+		</ion-page>
+	</div>
 </template>
 
 <script>
-import store from "@/store";
 import toast from "@/utils/toast";
-import {IonPage} from '@ionic/vue';
+import {IonPage, IonIcon} from '@ionic/vue';
 import auth from '@/utils/auth';
 import mutations from "@/utils/mutations";
+import { closeOutline } from 'ionicons/icons';
 
 export default {
-	components: {IonPage},
+	components: { IonPage, IonIcon },
 	data() {
 		return {
 			smscode: '',
@@ -38,15 +38,27 @@ export default {
 		}
 	},
 	name: 'smsCode',
+	watch: {
+		'$route'() {
+			this.$router.push('/login');
+		}
+	},
 	computed: {
 		user() {
 			return this.$store.getters.user;
 		},
-		getCode() {
-			return this.$refs.smscode.querySelector('input').value;
-		},
 	},
 	methods: {
+		close() {
+			this.$store.commit('setLoading', true);
+			this.$store.commit('clearUser');
+			document.location.href = '/login';
+		},
+		checkFour() {
+			if (this.smscode.length === 7) {
+				this.login();
+			}
+		},
 		clearCode () {
 			this.smscode = '';
 		},
@@ -66,10 +78,11 @@ export default {
 		},
 		async sendCode() {
 			this.resendCalc();
+			this.$refs.code.focus()
 			try {
 				let data = await auth.sendCode(this.user, this.$route.query.type);
-				store.commit('setUserId', {id: data.userId});
-				store.commit('setPhone', {phone: this.user.phone});
+				this.$store.commit('setUserId', {id: data.userId});
+				this.$store.commit('setPhone', {phone: this.user.phone});
 				if (data.success) {
 					toast({
 						message: 'Смс с кодом успешно отправлено',
@@ -85,9 +98,11 @@ export default {
 		},
 		async login() {
 			try {
+				this.$store.commit('setLoading', true);
 				await this.$store.dispatch('login', {phone: this.user.phone, code: mutations.getClearCode(this.smscode)});
 				setTimeout(() => {
 					this.clearCode();
+					this.$store.commit('setLoading', false);
 					this.$router.push('/profile');
 				}, 1100);
 			} catch (e) {
@@ -97,6 +112,11 @@ export default {
 	},
 	mounted() {
 		this.sendCode();
+	},
+	setup() {
+		return {
+			closeOutline
+		}
 	}
 };
 </script>

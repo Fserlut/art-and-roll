@@ -1,176 +1,171 @@
 <template>
-	<ion-card>
-		<h1 v-if="step == 0" class="text-center">Выберите сферу вашей деятельности</h1>
-		<h1 v-else class="text-center">Выберите сферу для поиска</h1>
-		<div class="" v-if="step == 0">
-			<ion-item>
-				<ion-label>Основная сфера</ion-label>
-				<ion-select @ionChange="changeSpheres" v-model="selectedCategoryType.main" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in spheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item>
-				<ion-label>Вторая сфера</ion-label>
-				<ion-select @ionChange="changeThird" v-model="selectedCategoryType.second" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in secondSpheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item>
-				<ion-label>Третья сфера</ion-label>
-				<ion-select v-model="selectedCategoryType.third" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in thirdSpheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-		</div>
-		<div class="" v-else>
-			<ion-item>
-				<ion-label>Основная сфера</ion-label>
-				<ion-select @ionChange="changeSpheres" v-model="selectedFindCategoryType.main" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in spheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item>
-				<ion-label>Вторая сфера</ion-label>
-				<ion-select @ionChange="changeThird" v-model="selectedFindCategoryType.second" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in secondSpheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item>
-				<ion-label>Третья сфера</ion-label>
-				<ion-select v-model="selectedFindCategoryType.third" interface="popover">
-					<ion-select-option
-						v-for="(sphere, idx) in thirdSpheres"
-						:key="sphere.title + idx"
-						:value="sphere.title"
-					>
-						{{ sphere.title }}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-		</div>
-		<div class="text-center mt-2 mb-1">
-			<ion-button size="large" @click="nextStep" color="tertiary">Продолжить</ion-button>
-		</div>
-	</ion-card>
+	<div class="register-page second-step">
+		<ion-card style="box-shadow: none">
+			<div>
+				<h1 class="text-center">Выберите {{ step > 2 ? stepsOptions[step - 3].title : stepsOptions[step].title }} сферу {{ step > 2 ? 'для поиска' : 'вашей деятельности' }}</h1>
+				<ion-item lines="none">
+					<ion-label @click="openPicker" class="text-center">
+						<strong>{{ picked ? picked : 'Нажмите сюда, чтобы выбрать' }}</strong>
+					</ion-label>
+				</ion-item>
+			</div>
+			<div class="text-center mt-1 mb-1">
+				<ion-button size="large" class="mb-1" @click="nextStep" color="primary">Продолжить</ion-button>
+				<br>
+				<span v-if="step !== 0 && step !== 3" @click="skip" class="link-btn">Пропустить</span>
+			</div>
+		</ion-card>
+	</div>
 </template>
 
 <script>
 import {IonItem, IonLabel, IonSelect, IonSelectOption} from "@ionic/vue"
+import {pickerController} from "@ionic/core";
 
 export default {
 	components: {IonItem, IonLabel, IonSelect, IonSelectOption},
 	data() {
 		return {
 			step: 0,
-			emitSpheres: {},
-			spheres: [
+			picked: null,
+			findSpheres: {},
+			mySpheres: {},
+			stepsOptions: [
 				{
-					title: 'Певец',
+					idx: 0,
+					title: 'основую',
+					value: 'main',
 				},
 				{
-					title: 'Сценарист',
+					idx: 1,
+					title: 'вторую',
+					value: 'second',
 				},
 				{
-					title: 'Актер',
-				},
-				{
-					title: 'Режиссер',
-				},
-				{
-					title: 'Композитор',
-				},
-				{
-					title: 'Поэт',
+					idx: 2,
+					title: 'третью',
+					value: 'third',
 				}
 			],
-			secondSpheres: this.spheres,
-			thirdSpheres: this.spheres,
 		}
 	},
 	computed: {
+		getClearSpheres() {
+			console.log('this.getMainType = ', this.getMainType);
+			return (
+				[
+					{
+						text: "Певец", value: "Певец"
+					},
+					{
+						text: "Сценарист", value: "Сценарист"
+					},
+					{
+						text: "Актер", value: "Актер"
+					},
+					{
+						text: "Режиссер", value: "Режиссер"
+					},
+					{
+						text: "Композитор", value: "Композитор"
+					},
+					{
+						text: "Поэт", value: "Поэт"
+					}
+				].filter(el => (el.text !== this.getMainType && el.text !== this.getSecondType && el.text !== this.getThird))
+
+			)
+		},
+		pickingOptions() {
+			let clearSpheres = this.getClearSpheres;
+			return {
+				name: "Spheres",
+				options: clearSpheres,
+			}
+		},
 		getMainType() {
-			return this.selectedCategoryType.main;
+			let sphere;
+			if (this.step > 2) {
+				sphere = this.findSpheres.main;
+				return sphere;
+			}
+			sphere = this.mySpheres.main;
+			return sphere
 		},
 		getSecondType() {
-			return this.selectedCategoryType.second;
+			let sphere;
+			if (this.step > 2) {
+				sphere = this.findSpheres.second;
+				return sphere;
+			}
+			sphere = this.mySpheres.second;
+			return sphere
+		},
+		getThird() {
+			let sphere;
+			if (this.step > 2) {
+				sphere = this.findSpheres.third;
+				return sphere
+			}
+			sphere = this.mySpheres.third;
+			return sphere
 		},
 		getPhone() {
 			return this.$refs.tel.querySelector('input').value;
 		},
-	},
-	methods: {
-		nextStep() {
-			if (this.step == 0) {
-				this.emitSpheres.mySpheres = this.selectedCategoryType;
-				this.selectedCategoryType = '';
-				this.step++;
-			} else {
-				this.emitSpheres.findSpheres = this.selectedFindCategoryType;
-				this.$emit('nextStep', this.emitSpheres);
+		validPicked() {
+			if (this.step === 0 || this.step === 3) {
+				return this.picked !== null
 			}
-		},
-		changeThird() {
-			this.thirdSpheres = this.spheres.filter(el => el.title != this.selectedCategoryType.main && el.title != this.selectedCategoryType.second);
-		},
-		changeSpheres() {
-			this.secondSpheres = this.spheres.filter(el => el.title != this.selectedCategoryType.main && el.title != this.selectedCategoryType.third);
-			this.thirdSpheres = this.spheres.filter(el => el.title != this.selectedCategoryType.main && el.title != this.selectedCategoryType.second);
+			return true
 		}
 	},
-	setup() {
-		let selectedCategoryType = {};
-		let selectedFindCategoryType = {};
-
-		selectedCategoryType.main = '';
-		selectedFindCategoryType.main = '';
-		selectedCategoryType.second = '';
-		selectedFindCategoryType.second = '';
-		selectedCategoryType.third = '';
-		selectedFindCategoryType.third = '';
-
-		return {selectedCategoryType, selectedFindCategoryType};
-	}
-};
+	methods: {
+		skip() {
+			this.nextStep();
+		},
+		async openPicker() {
+			const picker = await pickerController.create({
+				columns: [this.pickingOptions],
+				buttons: [
+					{
+						text: "Отменить",
+						role: "cancel",
+					},
+					{
+						text: "Выбрать",
+						handler: (value) => {
+							this.picked = value.Spheres.text;
+							console.log(this.picked);
+						},
+					},
+				],
+			});
+			await picker.present();
+		},
+		nextStep() {
+			if (this.validPicked) {
+				if (this.step == 5) {
+					this.findSpheres[this.stepsOptions[this.step - 3].value] = this.picked;
+					this.$emit('nextStep', { findSpheres: this.findSpheres, mySpheres: this.mySpheres });
+				} else {
+					if (this.step > 2) {
+						this.findSpheres[this.stepsOptions[this.step - 3].value] = this.picked;
+					} else {
+						this.mySpheres[this.stepsOptions[this.step].value] = this.picked;
+					}
+					this.picked = null;
+					this.step++;
+					this.openPicker();
+				}
+			} else {
+				this.$store.commit('setError', {message: 'Чтобы продолжить нужно выбрать сферу'})
+			}
+		}
+	},
+}
 </script>
 
 <style scoped>
-ion-card,
-ion-item {
-	--background: #fff;
-	color: #000;
-}
 
-ion-item {
-	padding-right: 20px;
-}
 </style>
