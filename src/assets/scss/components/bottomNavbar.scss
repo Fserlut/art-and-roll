@@ -1,0 +1,22 @@
+ion-tab-bar{
+	background: $backgroundColor;
+	ion-tab-button{
+		background: $backgroundColor;
+		position: relative;
+		&:not(:last-child):after{
+			content: '';
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 2px;
+			height: 10px;
+			background: $halfBlack;
+		}
+		&.tab-selected{
+			ion-icon{
+				color: $buttonBackground;
+			}
+		}
+	}
+}

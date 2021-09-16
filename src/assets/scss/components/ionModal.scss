@@ -1,0 +1,20 @@
+ion-modal{
+	background: $backgroundColor!important;
+	--ion-background-color: $backgroundColor!important;
+	ion-header{
+		background: $backgroundColor!important;
+		--ion-background-color: $backgroundColor!important;
+		--ion-toolbar-background: $backgroundColor!important;
+		color: $fontColor;
+		--color: $fontColor;
+	}
+	ion-list{
+		border: none;
+		ion-item{
+			background: $backgroundColor!important;
+			--background: $backgroundColor!important;
+			color: $fontColor;
+			--color: $fontColor;
+		}
+	}
+}

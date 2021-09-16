@@ -1,8 +1,10 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue } from '@ionic/vue';
+import VueTheMask from "vue-the-mask";
+
+import {IonicVue} from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -23,10 +25,21 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
-  
+/* My scss */
+import './assets/scss/index.scss';
+
+
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import store from "@/store";
+
+defineCustomElements(window);
+
+let app = createApp(App)
+	.use(IonicVue)
+	.use(VueTheMask)
+	.use(store)
+	.use(router);
+
 router.isReady().then(() => {
-  app.mount('#app');
+	app.mount('#app');
 });

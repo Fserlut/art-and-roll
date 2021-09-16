@@ -1,0 +1,11 @@
+ion-toast{
+	&.ion-color{
+		color: $secondFontColor;
+		&-danger{
+			color: $secondFontColor;
+		}
+		&-success{
+			color: $secondFontColor;
+		}
+	}
+}

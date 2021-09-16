@@ -1,0 +1,9 @@
+ion-picker{
+	.picker-wrapper, .picker-columns{
+		background: $backgroundColor!important;
+		--background: $backgroundColor!important;
+	}
+	.picker-button{
+		color: $fontColor!important;
+	}
+}
