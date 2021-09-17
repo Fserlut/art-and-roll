@@ -40,7 +40,7 @@ export default {
 	name: 'smsCode',
 	watch: {
 		'$route'() {
-			this.$router.push('/login');
+			document.location.href = '/login';
 		}
 	},
 	computed: {
@@ -98,12 +98,13 @@ export default {
 		},
 		async login() {
 			try {
+				this.$refs.code.blur();
 				this.$store.commit('setLoading', true);
 				await this.$store.dispatch('login', {phone: this.user.phone, code: mutations.getClearCode(this.smscode)});
 				setTimeout(() => {
 					this.clearCode();
 					this.$store.commit('setLoading', false);
-					this.$router.push('/profile');
+					document.location.href = '/profile';
 				}, 1100);
 			} catch (e) {
 				console.log(e);

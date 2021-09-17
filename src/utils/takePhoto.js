@@ -1,7 +1,5 @@
-import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
-import $api from "@/utils/backend";
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import store from "@/store";
-import router from "@/router";
 
 export function usePhotoGallery() {
 	let photo = {};
@@ -38,7 +36,6 @@ export function usePhotoGallery() {
 
 	return {
 		takePhoto,
-		photo,
 		loadGallery
 	};
 }

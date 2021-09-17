@@ -50,9 +50,9 @@ export default {
 					await this.$store.commit('setPhone', {phone: mutations.getClearPhone(this.phone)});
 					this.clearPhone();
 					if (data.isActive) {
-						await this.$router.push('/smscode?type=Login')
+						document.location.href = '/smscode?type=Login';
 					} else {
-						await this.$router.push('/register');
+						document.location.href = '/register';
 					}
 				} catch (e) {
 					this.$store.commit('setError', {message: e.response.data.message});

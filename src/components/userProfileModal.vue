@@ -42,6 +42,8 @@ import {
 } from '@ionic/vue';
 import {chevronBackSharp} from 'ionicons/icons';
 
+import editUserProfile from '@/components/editUserProfile';
+
 export default {
 	data() {
 		return {
@@ -49,7 +51,18 @@ export default {
 				{
 					name: 'edit-profile',
 					title: 'Редактировать профиль',
-					action: 'edit-profile',
+					action: async () => {
+						const modal = await modalController
+							.create({
+								component: editUserProfile,
+								cssClass: 'my-custom-class',
+								swipeToClose: true,
+								componentProps: {
+									title: 'New Title'
+								},
+							})
+						return modal.present();
+					},
 				},
 				{
 					name: 'user-agreements',
@@ -71,7 +84,7 @@ export default {
 						this.closeModal();
 						setTimeout(async () => {
 							this.$store.commit('setLoading', false);
-							await this.$router.push('/login');
+							document.location.href = '/login';
 						}, 200);
 					},
 				}

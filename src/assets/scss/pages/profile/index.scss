@@ -1,0 +1,13 @@
+.profile-page {
+	.ion-page{
+		justify-content: flex-start;
+	}
+	.user-info-block{
+		margin-top: 115px;
+		z-index: 111;
+	}
+	ion-card{
+		margin: 0;
+		box-shadow: none;
+	}
+}

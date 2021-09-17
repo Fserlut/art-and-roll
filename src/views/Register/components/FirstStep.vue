@@ -30,7 +30,7 @@
 <script>
 
 import UserService from "@/backend/user";
-
+import {validLogin, validName} from "@/utils/validator";
 export default {
 	computed: {
 		getLogin() {
@@ -50,17 +50,6 @@ export default {
 		clearName() {
 			this.$refs.name.querySelector('input').value = ''
 		},
-		validName() {
-			if (this.$refs.name.querySelector('input').value.length > 0) {
-				if (!(/^[а-я]*$/i.test(this.$refs.name.querySelector('input').value))) {
-					this.$store.commit('setError', {message: 'Имя содержит недопустимые символы'});
-					return true;
-				}
-				return false
-			}
-			this.$store.commit('setError', {message: 'Пропущено поле Имя'});
-			return true
-		},
 		validBirthDay() {
 			if (this.$refs.birthday.querySelector('input').value != '') {
 				return false
@@ -68,23 +57,9 @@ export default {
 			this.$store.commit('setError', {message: 'Заполните дату рождения'});
 			return true
 		},
-		async validLogin() {
-			let login = this.$refs.login.querySelector('input').value;
-			if (login.length > 0) {
-				if (!(/^[a-z][a-z0-9\._-]*$/i.test(login))) {
-					this.$store.commit('setError', {message: 'В поле логин использаются недопустимые символы'})
-					return true;
-				}
-				let { data } = await UserService.validLogin(login);
-				data.isClosed ? this.$store.commit('setError', {message: 'Логин уже занят'}) : '';
-				return data.isClosed;
-			}
-			this.$store.commit('setError', {message: 'Пропущено поле Логин'});
-			return true;
-		},
 		async nextStep() {
-			let loginIsValid = await this.validLogin();
-			if (!loginIsValid && !this.validName() && !this.validBirthDay()) {
+			let loginIsValid = await validLogin(this.$refs.login.querySelector('input').value);
+			if (!loginIsValid && !validName(this.$refs.name.querySelector('input').value) && !this.validBirthDay()) {
 				this.$emit('nextStep', {login: this.getLogin, name: this.getName, birthday: +new Date(this.getBirthday)});
 				this.clearLogin();
 				this.clearName();

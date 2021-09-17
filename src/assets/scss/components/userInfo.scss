@@ -1,0 +1,15 @@
+.user-info{
+	.avatar-img{
+		margin: 0 auto;
+	}
+	.user-description{
+		margin-top: 10px;
+		text-align: center;
+	}
+	border-bottom: 1px solid black;
+	border-radius: 0;
+	ion-card-content{
+		padding-top: 5px;
+		padding-bottom: 10px;
+	}
+}

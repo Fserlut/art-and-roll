@@ -13,10 +13,8 @@ ion-tab-bar{
 			height: 10px;
 			background: $halfBlack;
 		}
-		&.tab-selected{
-			ion-icon{
-				color: $buttonBackground;
-			}
+		&.tab-selected ion-icon{
+			color: $buttonBackground!important;
 		}
 	}
 }

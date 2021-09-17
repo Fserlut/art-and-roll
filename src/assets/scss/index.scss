@@ -15,6 +15,7 @@
 @import "./pages/login/index";
 @import "./pages/register/index";
 @import "./pages/smsCode/index";
+@import "./pages/profile/index";
 
 // components
 @import "./components/ionButton";
@@ -24,8 +25,15 @@
 @import "./components/ionPicker";
 @import "./components/ionToast";
 @import "./components/loading";
+@import "./components/userInfo";
+@import "./components/userAvatar";
 
 
 .ion-page{
 	background: $backgroundColor;
+}
+
+.link{
+	color: $buttonBackground;
+	font-weight: bold;
 }

@@ -10,6 +10,7 @@ export default {
 			artsCounter: 0,
 			rollsCounter: 0,
 			birthday: '',
+			profileDescription: '',
 		}
 	},
 	getters: {
