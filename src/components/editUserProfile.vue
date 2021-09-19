@@ -38,18 +38,22 @@
 				<ion-item class="desc-input">
 					<ion-label
 						ref="desc"
-						autocomplete="off"
-						inputmode="text"
-						:value="userDescription"
 						placeholder="Введите описание"
 					>
 						Описание</ion-label>
 					<ion-textarea
 						maxLength="100"
 						rows="5"
+						autocomplete="off"
+						inputmode="text"
+						:value="userDescription"
 					>
 
 					</ion-textarea>
+				</ion-item>
+				<ion-item class="find-input">
+					<ion-label>Основаная сфера</ion-label>
+
 				</ion-item>
 				<div class="button-container">
 					<ion-button @click="editProfile" expand="block" color="primary">Обновить</ion-button>
@@ -86,10 +90,12 @@ export default {
 			userDescription: '',
 		}
 	},
+	props: {
+		user: {
+			type: Object,
+		}
+	},
 	computed: {
-		user() {
-			return this.$store.getters.user;
-		},
 		getName() {
 			return document.querySelector('.name-input input').value;
 		}

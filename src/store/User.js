@@ -11,6 +11,8 @@ export default {
 			rollsCounter: 0,
 			birthday: '',
 			profileDescription: '',
+			findSpheres: {},
+			mySpheres: {},
 		}
 	},
 	getters: {

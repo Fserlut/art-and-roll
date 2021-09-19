@@ -51,7 +51,6 @@ export default {
 	},
 	computed: {
 		getClearSpheres() {
-			console.log('this.getMainType = ', this.getMainType);
 			return (
 				[
 					{

@@ -51,7 +51,13 @@ export default {
 					cssClass: 'my-custom-class',
 					swipeToClose: true,
 					componentProps: {
-						title: 'New Title'
+						user: {
+							name: this.user.name,
+							login: this.user.login,
+							profileDescription: this.user.profileDescription,
+							findSpheres: this.user.findSpheres,
+							mySpheres: this.user.mySpheres,
+						}
 					},
 				})
 			return modal.present();
