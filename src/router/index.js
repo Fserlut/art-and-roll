@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from '@ionic/vue-router';
-// eslint-disable-next-line no-unused-vars
 import store from "@/store";
 import Login from '../views/Login.vue'
 import Register from "@/views/Register/index";
@@ -36,7 +35,7 @@ const routes = [
 				if (!store.getters.isAuth){
 					next()
 				}
-				next('/profile');
+				next(from.fullPath);
 			} else {
 				next();
 			}
@@ -81,10 +80,10 @@ const routes = [
 		async beforeEnter(to, from, next) {
 			if (localStorage.getItem('token')) {
 				await store.dispatch('checkAuth');
-				if (!store.getters.isAuth){
-					next('/login')
+				if (store.getters.isAuth){
+					next();
 				}
-				next();
+				next('/login')
 			} else {
 				next('/login');
 			}

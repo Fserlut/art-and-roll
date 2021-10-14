@@ -37,10 +37,10 @@ export default {
 			this.user = {...this.user, ...userData, phone: this.$store.getters.user.phone}
 			this.$store.commit('setUser', this.user);
 			this.$store.commit('setLoading', false);
-			document.location.href = '/smscode?type=Register';
+			this.$router.push('/smscode?type=Register');
 		},
 		goLogin() {
-			document.location.href = '/login';
+			this.$router.push('/login');
 		}
 	}
 };

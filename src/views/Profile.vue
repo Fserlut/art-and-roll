@@ -1,13 +1,13 @@
 <template>
-	<div class="profile-page">
-		<ion-page>
+	<ion-page>
+		<div class="profile-page">
 			<UserTopNavbar/>
 			<div class="user-info-block">
 				<UserInfo v-if="user" :user="user"/>
 			</div>
 			<Navigations/>
-		</ion-page>
-	</div>
+		</div>
+	</ion-page>
 </template>
 
 <script>

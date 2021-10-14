@@ -1,6 +1,6 @@
 <template>
-	<div class="login-page">
-		<ion-page>
+	<ion-page>
+		<div class="login-page">
 			<ion-card style="box-shadow: none">
 				<h1 class="text-center">Введите номер телефона, чтобы войти</h1>
 				<ion-item>
@@ -12,8 +12,8 @@
 					</ion-button>
 				</div>
 			</ion-card>
-		</ion-page>
-	</div>
+		</div>
+	</ion-page>
 </template>
 
 <script>
@@ -50,9 +50,9 @@ export default {
 					await this.$store.commit('setPhone', {phone: mutations.getClearPhone(this.phone)});
 					this.clearPhone();
 					if (data.isActive) {
-						document.location.href = '/smscode?type=Login';
+						this.$router.push('/smscode?type=login');
 					} else {
-						document.location.href = '/register';
+						this.$router.push('/register');
 					}
 				} catch (e) {
 					this.$store.commit('setError', {message: e.response.data.message});

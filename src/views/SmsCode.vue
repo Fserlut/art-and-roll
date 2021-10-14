@@ -1,6 +1,6 @@
 <template>
-	<div class="sms-code-page">
-		<ion-page>
+	<ion-page>
+		<div class="sms-code-page">
 			<ion-icon @click="close" size="large" :icon="closeOutline"></ion-icon>
 			<ion-card style="box-shadow: none">
 				<h1 class="text-center">Введите код из смс.</h1>
@@ -17,8 +17,8 @@
 					</ion-button>
 				</div>
 			</ion-card>
-		</ion-page>
-	</div>
+		</div>
+	</ion-page>
 </template>
 
 <script>
@@ -40,7 +40,7 @@ export default {
 	name: 'smsCode',
 	watch: {
 		'$route'() {
-			document.location.href = '/login';
+			this.$router.push('/login');
 		}
 	},
 	computed: {
@@ -52,7 +52,7 @@ export default {
 		close() {
 			this.$store.commit('setLoading', true);
 			this.$store.commit('clearUser');
-			document.location.href = '/login';
+			this.$router.push('/login');
 		},
 		checkFour() {
 			if (this.smscode.length === 7) {
@@ -104,7 +104,7 @@ export default {
 				setTimeout(() => {
 					this.clearCode();
 					this.$store.commit('setLoading', false);
-					document.location.href = '/profile';
+					this.$router.push('/profile');
 				}, 1100);
 			} catch (e) {
 				console.log(e);

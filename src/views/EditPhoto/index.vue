@@ -46,7 +46,7 @@ export default {
 					await this.$store.commit('setUser', data.data.user);
 					await this.$store.commit('clearTargetImage');
 					this.destroyCanvas();
-					document.location.href = '/profile';
+					this.$router.push('/profile');
 				} else {
 					this.$store.commit('setError', {message: 'Ошибка при загрузке фотографии, попробейте еще раз'});
 				}

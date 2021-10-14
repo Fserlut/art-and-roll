@@ -1,19 +1,19 @@
 <template>
 	<ion-tabs class="bottom-nav-bar" @ionTabsWillChange="beforeTabChange" @ionTabsDidChange="afterTabChange">
 		<ion-tab-bar slot="bottom">
-			<ion-tab-button tab="main" @click.prevent="goTo('/main')">
+			<ion-tab-button tab="main" href="/main">
 				<ion-icon :icon="homeSharp"></ion-icon>
 			</ion-tab-button>
 
-			<ion-tab-button tab="search" @click.prevent="goTo('/search')">
+			<ion-tab-button tab="search" href="/search">
 				<ion-icon :icon="searchSharp"></ion-icon>
 			</ion-tab-button>
 
-			<ion-tab-button tab="messenger" @click.prevent="goTo('/messenger')">
+			<ion-tab-button tab="messenger" href="/messenger">
 				<ion-icon :icon="chatbubbleEllipsesSharp"></ion-icon>
 			</ion-tab-button>
 
-			<ion-tab-button tab="profile" @click.prevent="goTo('/profile')">
+			<ion-tab-button tab="profile" href="/profile">
 				<ion-icon :icon="personSharp"></ion-icon>
 			</ion-tab-button>
 		</ion-tab-bar>
@@ -44,7 +44,7 @@ export default {
 				},
 				messenger: {
 					idx: 2,
-					link: '/essenger',
+					link: '/messenger',
 				},
 				profile: {
 					idx: 3,
@@ -61,12 +61,6 @@ export default {
 			}, 200);
 
 		},
-		goTo(link) {
-			if (!document.location.href.includes(link)) {
-				this.$store.commit('setLoading', true);
-				document.location.href = link;
-			}
-		}
 	},
 	mounted() {
 		this.setSelected(document.location.href);

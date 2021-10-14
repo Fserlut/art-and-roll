@@ -77,13 +77,13 @@ export default {
 		async updatePhoto() {
 			await this.takePhoto();
 			if (this.$store.getters.getTargetImage) {
-				document.location.href = '/edit-photo';
+				this.$router.push('/edit-photo');
 			}
 		},
 		async updateFromGallery() {
 			await this.loadGallery();
 			if (this.$store.getters.getTargetImage) {
-				document.location.href = '/edit-photo';
+				this.$router.push('/edit-photo');
 			}
 
 		},

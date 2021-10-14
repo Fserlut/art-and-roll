@@ -84,7 +84,7 @@ export default {
 						this.closeModal();
 						setTimeout(async () => {
 							this.$store.commit('setLoading', false);
-							document.location.href = '/login';
+							this.$router.push('/login');
 						}, 200);
 					},
 				}

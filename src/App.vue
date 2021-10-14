@@ -20,6 +20,11 @@ export default defineComponent({
 		Error,
 		Loading
 	},
+	watch: {
+		'$route'() {
+			console.log('change route');
+		}
+	},
 	computed: {
 		loading() {
 			return this.$store.getters.getLoading;

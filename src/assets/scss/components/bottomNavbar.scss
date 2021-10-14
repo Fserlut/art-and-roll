@@ -1,3 +1,15 @@
+.bottom-nav-bar{
+	display: flex;
+	position: fixed;
+	inset: unset!important;
+	flex-direction: column;
+	width: 100% !important;
+	height: 55px!important;
+	contain: size layout style;
+	z-index: 0!important;
+	bottom: 0!important;
+}
+
 ion-tab-bar{
 	background: $backgroundColor;
 	ion-tab-button{
